@@ -1,2 +1,2 @@
-# meta-heuristicas
-Este repositorio contiene heuristicas y metaheuristicas
+# Meta-heuristics
+This repository contains heuristics, also meta-heuristics
