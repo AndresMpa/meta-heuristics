@@ -4,7 +4,7 @@
   "description": "Este repositoria contiene heuristicas y metaheuristicas utiles para inteligencia artificial",
   "main": "index.js",
   "scripts": {
-    "sass": "sass --watch ./src/styles/index.scss ./src/styles/main.css",
+    "sass": "npx sass -w ./src/styles/main.scss ./src/styles/main.css",
     "start": "live-server ./index.html",
     "test": "jest"
   },
