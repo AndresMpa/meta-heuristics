@@ -1,0 +1,40 @@
+//Primary
+
+$option-1-top: hsl(39, 89%, 49%);
+$option-1-bottom: hsl(40, 84%, 53%);
+$option-2-top: hsl(230, 89%, 62%);
+$option-2-bottom: hsl(230, 89%, 65%);
+$option-3-top: hsl(349, 71%, 52%);
+$option-3-bottom: hsl(349, 70%, 56%);
+$option-4-top: hsl(261, 73%, 60%);
+$option-4-bottom: hsl(261, 72%, 63%);
+$option-5-top: hsl(189, 59%, 53%);
+$option-5-bottom: hsl(189, 58%, 57%);
+
+.option-1 {
+  background: linear-gradient($option-1-top, $option-1-bottom);
+}
+.option-2 {
+  background: linear-gradient($option-2-top, $option-2-bottom);
+}
+.option-3 {
+  background: linear-gradient($option-3-top, $option-3-bottom);
+}
+.option-4 {
+  background: linear-gradient($option-4-top, $option-4-bottom);
+}
+.option-5 {
+  background: linear-gradient($option-5-top, $option-5-bottom);
+}
+
+//Neutral
+
+$white: hsl(180, 90%, 100%);
+$darkText: hsl(229, 25%, 31%);
+$highlightText: hsl(229, 64%, 46%);
+$headerOutline: hsl(217, 16%, 45%);
+
+//Background
+
+$background-top: hsl(214, 47%, 23%);
+$background-bottom: hsl(237, 49%, 15%);

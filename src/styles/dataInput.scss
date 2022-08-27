@@ -1,0 +1,40 @@
+.dataInput {
+  display: flex;
+  article {
+    border: 2px solid $headerOutline;
+    border-radius: 0px 8px 8px 0px;
+    padding: 1vw 1vw 0px 1vw;
+    h2 {
+      padding-bottom: 10px;
+      text-align: center;
+    }
+    form {
+      label {
+        display: block;
+      }
+      input {
+        border: 2px solid $headerOutline;
+        border-radius: 15px;
+        padding: 5px;
+        color: black;
+        width: 300px;
+      }
+      input:focus {
+        border: 2px solid $headerOutline;
+      }
+      input::placeholder {
+        color: black;
+      }
+    }
+    button {
+      border: 2px solid $headerOutline;
+      border-radius: 8px 8px 0px 0px;
+      background: none;
+      display: block;
+
+      margin: 15px auto 0 auto;
+      padding: 3px 0;
+      width: 60%;
+    }
+  }
+}

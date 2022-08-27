@@ -1,0 +1,22 @@
+.title {
+  font-size: 2.8em;
+  padding: 5vh;
+  article {
+    border: 2px solid $headerOutline;
+    border-radius: 8px;
+    margin: 0 auto;
+    width: 80%;
+    h1 {
+      text-align: center;
+      color: $white;
+
+      padding: 15px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+.title {
+  font-size: 1.8em;
+}
+}
