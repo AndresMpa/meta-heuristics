@@ -12,12 +12,16 @@
       label {
         display: block;
       }
-      input {
+      input[type="text"] {
         border: 2px solid $headerOutline;
         border-radius: 15px;
         padding: 5px;
         color: black;
         width: 300px;
+      }
+      input[type="checkbox"] {
+        border-radius: 15px;
+        padding: 5px;
       }
       input:focus {
         border: 2px solid $headerOutline;

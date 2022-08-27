@@ -1,4 +1,24 @@
-.main {
-  display: flex;
-  width: 100%;
+#main {
+  flex-direction: column;
+  display: inline-flex;
+  margin: 0px 2.5%;
+  width: 95%;
+  article {
+    background: linear-gradient(to right, $option-2-top, $option-2-bottom);
+    border-radius: 8px;
+    border: none;
+
+    margin: 0px 0px 2.5% 0px;
+    position: relative;
+    padding: 2px;
+    div {
+      background: $background-top;
+      border-radius: 8px;
+      padding: 2rem;
+      p {
+        text-align: center;
+        font-size: 1.2rem;
+      }
+    }
+  }
 }
