@@ -6,16 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="icon" type="image/x-icon" href="./src/assets/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
     <title>Metaheuristicas</title>
   </head>
   <body>
     <section class="title">
       <article>
-        <h1>Heuristics: Path & Neighborhood</h1>
+        <h1><a href="./"> Heuristics: Path & Neighborhood </a></h1>
       </article>
     </section>
     <section class="dataInput">
-      <article>
+      <article class="animate__animated animate__backOutLeft">
         <h2>Type your data</h2>
         <form>
           <label for="vars">Vars</label>
@@ -37,27 +41,23 @@
             placeholder="Type values, separated by spaces"
           />
           <label for="cost-volume">Cost / Volume</label>
-          <input
-            id="cost-volume"
-            type="text"
-            placeholder="Type values, separated by spaces"
-          />
+          <input type="checkbox" id="cost-volume" />
+          <label for="k-factor">K - Factor</label>
+          <input id="k-factor" type="checkbox" />
 
-          <button>+</button>
+          <button id="simulate">Simulate</button>
         </form>
       </article>
       <main id="main">
         <article>
-          <p>[1, 12, 1, 8, 3, 8]</p>
-        </article>
-        <article>
-          <p>[1, 12, 1, 8, 3, 8]</p>
-          <p>[1, 12, 1, 8, 3, 8]</p>
-          <p>[1, 12, 1, 8, 3, 8]</p>
+          <h3>Charge #1</h3>
+          <div>
+            <p>[1, 12, 1, 8, 3, 8]</p>
+          </div>
         </article>
       </main>
     </section>
 
-    <script type="module" src="./src/index.js"></script>
+    <script type="module" src="./src/simulator/index.js"></script>
   </body>
 </html>
