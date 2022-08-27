@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Este repositoria contiene heuristicas y metaheuristicas utiles para inteligencia artificial",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "sass": "npx sass -w ./src/styles/main.scss ./src/styles/main.css",
     "start": "live-server ./index.html",
