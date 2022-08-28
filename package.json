@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "gen": "node ./dataHandlers/makeSample.js",
+    "clean": "rm ./samples/*; clear;",
     "start": "node index.js"
   },
   "repository": {
