@@ -1,4 +1,4 @@
-import { random, getCurrentPath } from '../util/helpers.js';
+import { round, random, getCurrentPath } from '../util/helpers.js';
 import fs from 'fs';
 
 /*
@@ -10,7 +10,7 @@ import fs from 'fs';
 
   By default it generate 60 values per sample
 */
-const generateData = (dataLength = 60, top = [40, 80]) => {
+const generateData = (dataLength = 60, top = [20, 20]) => {
   let currentVolume = 0;
   let currentCost = 0;
 
@@ -27,8 +27,10 @@ const generateData = (dataLength = 60, top = [40, 80]) => {
 
     generatedData['cost'].push(currentCost);
     generatedData['volume'].push(currentVolume);
-    generatedData['costVolume'].push(currentCost / currentVolume);
-    generatedData['kFactor'].push(currentCost * 0.8 + currentVolume * 0.2);
+    generatedData['costVolume'].push(round(currentCost / currentVolume));
+    generatedData['kFactor'].push(
+      round(currentCost * 0.8 + currentVolume * 0.2)
+    );
   });
 
   return generatedData;
