@@ -1,6 +1,6 @@
 {
   "name": "meta-heuristicas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Este repositoria contiene heuristicas y metaheuristicas utiles para inteligencia artificial",
   "main": "index.js",
   "type": "module",
