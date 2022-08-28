@@ -16,3 +16,6 @@ definition by using options on this table
 | Min volume           | `npm run start k v` |
 | Max cost over volume | `npm run start k o` |
 | Max k factor         | `npm run start k k` |
+
+Default `npm run start` and `npm run start k` uses randomness to
+defines the schema
