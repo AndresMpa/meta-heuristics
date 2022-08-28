@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "gen": "node ./dataHandlers/makeSample.js",
     "start": "node index.js"
   },
   "repository": {
