@@ -64,7 +64,7 @@ const getSchema = (data, schema, option) => {
       break;
     }
     // Get schema using the greatest costs over volumes
-    case 'cv': {
+    case 'o': {
       let greatestCostsVolumens = getGreatest(data['costVolume'], template);
       greatestCostsVolumens = getIndexes(
         data['costVolume'],
@@ -94,4 +94,26 @@ const getSchema = (data, schema, option) => {
   }
 };
 
-export { random, getSchema, fillUpToZero, getCurrentPath };
+const cliHandler = () => {
+  const options = {
+    keep: false,
+    shema: 0,
+  };
+  const argvs = process.argv;
+  if (argvs.length > 4) {
+    throw new Error('Unknow actions');
+  }
+
+  options['keep'] = argvs.slice(2) === 'k' ? true : false;
+
+  if (argvs.slice(3)) {
+    let regrex = /[c|v|o|k]/g;
+    if (regrex.test(argvs.slice(3))) {
+      options['schema'] = argvs.slice(3);
+    }
+  }
+
+  return options;
+};
+
+export { random, cliHandler, getSchema, fillUpToZero, getCurrentPath };
