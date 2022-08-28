@@ -1,0 +1,32 @@
+{
+  "name": "meta-heuristicas",
+  "version": "1.0.0",
+  "description": "Este repositoria contiene heuristicas y metaheuristicas utiles para inteligencia artificial",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndresMpa/meta-heuristicas.git"
+  },
+  "keywords": [
+    "ai",
+    "node",
+    "heuristicas",
+    "metaheuristicas"
+  ],
+  "author": "AndresMpa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AndresMpa/meta-heuristicas/issues"
+  },
+  "homepage": "https://github.com/AndresMpa/meta-heuristicas#readme",
+  "devDependencies": {
+    "eslint": "^8.22.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.7.1"
+  }
+}
