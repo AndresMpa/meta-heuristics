@@ -1,14 +1,25 @@
-import { fillUpToZero, getSchema, cliHandler } from './util/helpers.js';
 import { getSample } from './dataHandlers/store.js';
+import { getSchema } from './schema/generator.js';
+import { fillUpToZero } from './util/helpers.js';
+import { cliHandler } from './cli/handler.js';
 
-let schema = [];
+let simulation = {
+  factible: true,
+  methods: [],
+  schema: [],
+
+  volume: 0,
+  cost: 0,
+};
 
 const simulate = () => {
-  const options = cliHandler();
   const data = getSample();
-  fillUpToZero(data['cost'], schema);
-  getSchema(data, schema, options["shema"]);
-  console.log(schema);
+  const options = cliHandler();
+
+  fillUpToZero(data['cost'], simulation['schema']);
+  getSchema(data, simulation, options['shema']);
+
+  console.log(simulation);
 };
 
 simulate();
