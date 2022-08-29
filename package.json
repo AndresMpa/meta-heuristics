@@ -5,9 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "gen": "node ./dataHandlers/fileHandler.js",
+    "clean": "rm ./samples/*; rm ./logs/*; clear;",
+    "gen": "node ./dataHandlers/generateSample.js",
     "init": "mkdir samples logs 2> /dev/null",
-    "clean": "rm ./samples/*; clear;",
+    "log": "node index.js > log.txt",
     "start": "node index.js"
   },
   "repository": {
