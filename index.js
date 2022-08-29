@@ -15,22 +15,16 @@ let simulation = {
   cost: 0,
 };
 
-const iteration = () => {
-  return simulation['schema'].reduce((prev, count) => {
-    return prev + count;
-  }, 0);
-};
-
-const results = (time, options) => {
+const results = (result, time, options) => {
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
-  console.log(`Simulation got a max cost of: ${simulation.cost}`);
-  console.log(`Simulation got a min volume of: ${simulation.volume}`);
+  console.log(`Simulation got a max cost of: ${result.cost}`);
+  console.log(`Simulation got a min volume of: ${result.volume}`);
   console.log(`Simulation used methods:`);
-  console.log(simulation.methods);
+  console.log(result.methods);
   console.log('Simulation got schema:');
-  console.log(simulation.schema);
+  console.log(result.schema);
   console.groupEnd('Simulation got:');
   console.groupEnd('Results:');
 
@@ -42,9 +36,7 @@ const results = (time, options) => {
   console.groupEnd('Performance');
 
   console.group('Extras');
-  console.log(
-    `Simulation terminated due to factiblility: ${simulation.factible}`
-  );
+  console.log(`Simulation terminated due to factiblility: ${result.factible}`);
   if (options.keep) {
     console.log(`Find extra log information on ./logs/${options.id}.txt`);
   }
@@ -70,11 +62,8 @@ const simulate = () => {
   iterations.push(simulation);
 
   while (simulation['limitVolume'] >= simulation['volume']) {
-    console.log(`Iteration ${iteration()}: `);
-    generateNeighborhood(data, simulation);
-    if (simulation['factible']) {
-      iterations.push(simulation);
-    }
+    console.log(`Iteration ${iterations.length}: `);
+    iterations.push(generateNeighborhood(data, simulation));
   }
 
   console.log('Simulation terminated');
@@ -82,7 +71,8 @@ const simulate = () => {
   const timeEnd = performance.now();
 
   setTimeout(() => {
-    results(timeEnd - timeStart, options);
+    results(simulation, timeEnd - timeStart, options);
+    console.log(iterations);
   }, 1000);
 };
 
