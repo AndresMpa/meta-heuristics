@@ -72,9 +72,19 @@ const hammingDistance = (value, compare) => {
   return distance;
 };
 
+const isZero = (array) => {
+  const zero = array.find((value) => {
+    if (value === 0) {
+      return true;
+    }
+  });
+  return (zero === 0) ? true : false;
+};
+
 export {
   round,
   random,
+  isZero,
   getIndexes,
   getGreatest,
   fillUpToZero,
