@@ -1,5 +1,6 @@
 import { getSchema, updateVolume } from './schema/generator.js';
 import { generateNeighborhood } from './schema/simulation.js';
+import { makeFile } from './dataHandlers/fileHandler.js';
 import { getSample } from './dataHandlers/store.js';
 import { fillUpToZero } from './util/helpers.js';
 import { cliHandler } from './cli/handler.js';
@@ -82,7 +83,11 @@ const simulate = () => {
     console.log('State of data:');
     console.log(data);
 
-    iterations.push(generateNeighborhood(data, simulation));
+    if (options.keep) {
+      iterations.push([data, generateNeighborhood(data, simulation)]);
+    } else {
+      iterations.push(generateNeighborhood(data, simulation));
+    }
   }
 
   console.log('Simulation terminated');
@@ -90,8 +95,20 @@ const simulate = () => {
   const timeEnd = performance.now();
 
   setTimeout(() => {
-    results(iterations[iterations.length - 2], timeEnd - timeStart, options);
+    if (options.keep) {
+      results(
+        iterations[iterations.length - 2][1],
+        timeEnd - timeStart,
+        options
+      );
+    } else {
+      results(iterations[iterations.length - 2], timeEnd - timeStart, options);
+    }
   }, 1000);
+
+  if (options.keep) {
+    makeFile(JSON.stringify(iterations), '.', 'logs/', options.id);
+  }
 };
 
 simulate();

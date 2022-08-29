@@ -8,12 +8,12 @@ const cliHandler = () => {
     throw new Error('Unknow actions');
   }
 
-  if (argvs.slice(2) === 'k') {
+  if (argvs[2] == 'k') {
     options['keep'] = true;
     options['id'] = Date.now()
   }
 
-  if (argvs.slice(3)) {
+  if (argvs[3]) {
     let regrex = /[c|v|o|k]/g;
     if (regrex.test(argvs.slice(3))) {
       options['schema'] = argvs.slice(3);
