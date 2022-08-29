@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "gen": "node ./dataHandlers/makeSample.js",
+    "gen": "node ./dataHandlers/fileHandler.js",
     "clean": "rm ./samples/*; clear;",
     "start": "node index.js"
   },
