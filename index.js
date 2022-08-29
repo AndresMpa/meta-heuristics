@@ -15,6 +15,12 @@ let simulation = {
   cost: 0,
 };
 
+const iteration = () => {
+  return simulation['schema'].reduce((prev, count) => {
+    return prev + count;
+  }, 0);
+};
+
 const simulate = () => {
   const data = getSample();
   const options = cliHandler();
@@ -30,9 +36,8 @@ const simulate = () => {
   iterations.push(simulation);
 
   while (simulation['limitVolume'] >= simulation['volume']) {
-    console.log(`Iteration ${simulation['methods'].length}: `);
+    console.log(`Iteration ${iteration()}: `);
     generateNeighborhood(data, simulation);
-
     iterations.push(simulation);
   }
 };
