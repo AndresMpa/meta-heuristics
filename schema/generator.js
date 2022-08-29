@@ -1,8 +1,31 @@
-import { random } from '../util/helpers.js';
+import { random, getIndexes, getGreatest } from '../util/helpers.js';
+
+const updateSampleData = (data, index) =>{
+  data["cost"][index] = null
+  data["volume"][index] = null
+  data["kFactor"][index] = null
+  data["costVolume"][index] = null
+}
+
+const updateVolume = (data, simulation) => {
+  const totalVolume = data['volume'].reduce((current, counter) => {
+    return current + counter;
+  }, 0);
+
+  simulation['limitVolume'] = (totalVolume * 1) / 3;
+};
 
 // It returns schemas under various options
-const getSchema = (data, schema, option) => {
-  const template = data['cost'].length * 0.1;
+const getSchema = (
+  data,
+  schema,
+  option,
+  useTemplate = { use: true, template: [] }
+) => {
+  const template = useTemplate['use']
+    ? [0, data['cost'].length * 0.1]
+    : useTemplate['data'];
+
   switch (option) {
     // Get schema using the greatest costs
     case 'c': {
@@ -12,8 +35,10 @@ const getSchema = (data, schema, option) => {
         schema['schema'][index] = 1;
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
+
+        updateSampleData(data, index)
       });
-      schema["methods"].push("cost")
+      schema['methods'].push('cost');
       break;
     }
     // Get schema using the greatest volumes
@@ -24,13 +49,18 @@ const getSchema = (data, schema, option) => {
         schema['schema'][index] = 1;
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
+
+        updateSampleData(data, index)
       });
-      schema["methods"].push("volume")
+      schema['methods'].push('volume');
       break;
     }
     // Get schema using the greatest costs over volumes
     case 'o': {
-      let greatestCostsVolumens = getGreatest(data['costVolume'], template);
+      let greatestCostsVolumens = getGreatest(data['costVolume'], [
+        0,
+        template,
+      ]);
       greatestCostsVolumens = getIndexes(
         data['costVolume'],
         greatestCostsVolumens
@@ -39,8 +69,10 @@ const getSchema = (data, schema, option) => {
         schema['schema'][index] = 1;
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
+
+        updateSampleData(data, index)
       });
-      schema["methods"].push("costVolume")
+      schema['methods'].push('costVolume');
       break;
     }
     // Get schema using the greatest k factors
@@ -51,22 +83,26 @@ const getSchema = (data, schema, option) => {
         schema['schema'][index] = 1;
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
+
+        updateSampleData(data, index)
       });
-      schema["methods"].push("kFactor")
+      schema['methods'].push('kFactor');
       break;
     }
     // Get schema using random values
     default: {
-      [...Array(template).keys()].forEach((_) => {
+      [...Array(template[1]).keys()].forEach((_) => {
         let index = random(0, data['cost'].length);
         schema['schema'][index] = 1;
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
+
+        updateSampleData(data, index)
       });
-      schema["methods"].push("random")
+      schema['methods'].push('random');
       break;
     }
   }
 };
 
-export { getSchema };
+export { getSchema, updateVolume };
