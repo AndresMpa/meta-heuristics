@@ -69,6 +69,4 @@ const generateSample = () => {
   }
 };
 
-export { makeFile };
-
-generateSample();
+export { generateSample, makeFile };
