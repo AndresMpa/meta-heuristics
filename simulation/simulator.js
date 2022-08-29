@@ -65,7 +65,7 @@ const simulate = (simulation, iterations) => {
   console.log(`Iteration ${simulation['methods'].length - 1}: Schema`);
   console.log(simulation);
 
-  iterations.push(simulation);
+  iterations.push(structuredClone(simulation));
 
   while (
     simulation['limitVolume'] >= simulation['volume'] &&
@@ -85,7 +85,8 @@ const simulate = (simulation, iterations) => {
     }
   }
 
-  console.log('Simulation terminated');
+  console.log('\n---------------Simulation terminated--------------\n');
+
 
   const timeEnd = performance.now();
 
