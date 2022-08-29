@@ -1,18 +1,18 @@
 import { random, getIndexes, getGreatest } from '../util/helpers.js';
 
-const updateSampleData = (data, index) =>{
-  data["cost"][index] = null
-  data["volume"][index] = null
-  data["kFactor"][index] = null
-  data["costVolume"][index] = null
-}
+const updateSampleData = (data, index) => {
+  data['cost'][index] = null;
+  data['volume'][index] = null;
+  data['kFactor'][index] = null;
+  data['costVolume'][index] = null;
+};
 
 const updateVolume = (data, simulation) => {
   const totalVolume = data['volume'].reduce((current, counter) => {
     return current + counter;
   }, 0);
 
-  simulation['limitVolume'] = (totalVolume * 1) / 3;
+  simulation['limitVolume'] = totalVolume / (2 * 4);
 };
 
 // It returns schemas under various options
@@ -36,7 +36,7 @@ const getSchema = (
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
 
-        updateSampleData(data, index)
+        updateSampleData(data, index);
       });
       schema['methods'].push('cost');
       break;
@@ -50,7 +50,7 @@ const getSchema = (
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
 
-        updateSampleData(data, index)
+        updateSampleData(data, index);
       });
       schema['methods'].push('volume');
       break;
@@ -70,7 +70,7 @@ const getSchema = (
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
 
-        updateSampleData(data, index)
+        updateSampleData(data, index);
       });
       schema['methods'].push('costVolume');
       break;
@@ -84,7 +84,7 @@ const getSchema = (
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
 
-        updateSampleData(data, index)
+        updateSampleData(data, index);
       });
       schema['methods'].push('kFactor');
       break;
@@ -97,7 +97,7 @@ const getSchema = (
         schema['cost'] += data['cost'][index];
         schema['volume'] += data['volume'][index];
 
-        updateSampleData(data, index)
+        updateSampleData(data, index);
       });
       schema['methods'].push('random');
       break;
