@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "gen": "node ./dataHandlers/fileHandler.js",
+    "init": "mkdir samples logs 2> /dev/null",
     "clean": "rm ./samples/*; clear;",
     "start": "node index.js"
   },
