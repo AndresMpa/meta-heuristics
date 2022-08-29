@@ -29,7 +29,7 @@ const getGreatest = (array, values, direction = true) => {
   const order = direction ? (a, b) => b - a : (a, b) => a - b;
   const sortedArray = () => rawArray.sort(order);
 
-  return sortedArray().slice(0, values);
+  return sortedArray().slice(values[0], values[1]);
 };
 
 /*
@@ -46,4 +46,4 @@ const getIndexes = (rawData, targets) => {
   return indexes;
 };
 
-export { round, random, fillUpToZero, getCurrentPath };
+export { round, random, fillUpToZero, getGreatest, getIndexes, getCurrentPath };
