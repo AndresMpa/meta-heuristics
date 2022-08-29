@@ -1,9 +1,9 @@
 import { random } from '../util/helpers.js';
 import { getSchema } from './generator.js';
 
-const selectedNeighbour = (neighborhood, target) => {
+const selectedNeighbour = (neighborhood, target, field) => {
   const selected = neighborhood.findIndex((neighbour) => {
-    return neighbour.cost === target;
+    return neighbour[field] === target;
   });
   return selected;
 };
@@ -16,8 +16,22 @@ const updateSimulation = (simulation, choosenNeighbour) => {
   simulation['factible'] = choosenNeighbour['factible'];
 };
 
-const checkNeighbour = (neighbour, simulation) => {
-  neighbour['factible'] = neighbour['volume'] <= simulation['limitVolume'];
+const checkNeighbour = (neighbour, simulation, alternative) => {
+  if (neighbour['volume'] > simulation['limitVolume']) {
+    neighbour['factible'] = false;
+
+    alternative.forEach((possibleOtherNeighbour) => {
+      if (possibleOtherNeighbour['volume'] < simulation['limitVolume']) {
+        neighbour['cost'] = possibleOtherNeighbour['cost'];
+        neighbour['volume'] = possibleOtherNeighbour['volume'];
+        neighbour['schema'] = possibleOtherNeighbour['schema'];
+        neighbour['methods'] = possibleOtherNeighbour['methods'];
+        neighbour['factible'] = possibleOtherNeighbour['factible'];
+      }
+    });
+  } else {
+    neighbour['factible'] = true;
+  }
 };
 
 const chooseNextNeighbour = (possible) => {
@@ -28,17 +42,20 @@ const chooseNextNeighbour = (possible) => {
 
   switch (method) {
     case 'c': {
-      const maxCost = Math.max(...possible.map((neighbour) => neighbour.cost));
-      index = selectedNeighbour(possible, maxCost);
+      const maxCost = Math.max(
+        ...possible.map((neighbour) => neighbour['cost'])
+      );
+      index = selectedNeighbour(possible, maxCost, 'cost');
       break;
     }
     case 'v': {
-      const minCost = Math.min(...possible.map((neighbour) => neighbour.cost));
-      index = selectedNeighbour(possible, minCost);
+      const minVolume = Math.min(
+        ...possible.map((neighbour) => neighbour['volume'])
+      );
+      index = selectedNeighbour(possible, minVolume, 'volume');
       break;
     }
-
-    case 'r': {
+    default: {
       index = random(0, possible.length);
       break;
     }
@@ -60,21 +77,16 @@ const generateNeighborhood = (data, simulation, size = 3) => {
     return generateNeighbour(data, structuredClone(simulation));
   });
 
-  /*
   console.group('Neighborhood');
   console.log(neighborhood);
   console.groupEnd('Neighborhood');
-  */
 
-  const choosenNeighbour = chooseNextNeighbour(neighborhood);
-  checkNeighbour(choosenNeighbour, simulation);
+  let choosenNeighbour = chooseNextNeighbour(neighborhood);
+  checkNeighbour(choosenNeighbour, simulation, neighborhood);
 
-  /*
   console.group('Choosen neighborhood');
+  console.log(choosenNeighbour);
   console.groupEnd('Choosen neighborhood');
-  */
-
-  console.log(choosenNeighbour['factible']);
 
   updateSimulation(simulation, choosenNeighbour);
 

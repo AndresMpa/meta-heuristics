@@ -21,6 +21,7 @@ const results = (result, time, options) => {
   console.group(`Simulation:`);
   console.log(`Simulation got a max cost of: ${result.cost}`);
   console.log(`Simulation got a min volume of: ${result.volume}`);
+  console.log(`Simulation fill up limit volume of: ${result.limitVolume}`);
   console.log(`Simulation used methods:`);
   console.log(result.methods);
   console.log('Simulation got schema:');
@@ -36,7 +37,22 @@ const results = (result, time, options) => {
   console.groupEnd('Performance');
 
   console.group('Extras');
-  console.log(`Simulation terminated due to factiblility: ${result.factible}`);
+  console.log(
+    `Simulation terminated due to factiblility: ${simulation.factible}`
+  );
+
+  console.group(`Last neighbour:`);
+  console.log(`Neighbour suggested a cost of: ${simulation.cost}`);
+  console.log(`Neighbour suggested a volume of: ${simulation.volume}`);
+  console.log(
+    `Neighbour used method: ${
+      simulation.methods[simulation.methods.length - 1]
+    }`
+  );
+  console.log('Neighbour suggested schema:');
+  console.log(simulation.schema);
+  console.groupEnd('Last neighbour:');
+
   if (options.keep) {
     console.log(`Find extra log information on ./logs/${options.id}.txt`);
   }
@@ -63,6 +79,9 @@ const simulate = () => {
 
   while (simulation['limitVolume'] >= simulation['volume']) {
     console.log(`Iteration ${iterations.length}: `);
+    console.log('State of data:');
+    console.log(data);
+
     iterations.push(generateNeighborhood(data, simulation));
   }
 
@@ -71,8 +90,7 @@ const simulate = () => {
   const timeEnd = performance.now();
 
   setTimeout(() => {
-    results(simulation, timeEnd - timeStart, options);
-    console.log(iterations);
+    results(iterations[iterations.length - 2], timeEnd - timeStart, options);
   }, 1000);
 };
 

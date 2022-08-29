@@ -10,7 +10,7 @@ import fs from 'fs';
 
   By default it generate 60 values per sample
 */
-const generateData = (dataLength = 60, top = [20, 40]) => {
+const generateData = (dataLength = 60, top = [20, 60]) => {
   let currentVolume = 0;
   let currentCost = 0;
 
