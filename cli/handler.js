@@ -8,7 +8,10 @@ const cliHandler = () => {
     throw new Error('Unknow actions');
   }
 
-  options['keep'] = argvs.slice(2) === 'k' ? true : false;
+  if (argvs.slice(2) === 'k') {
+    options['keep'] = true;
+    options['id'] = Date.now()
+  }
 
   if (argvs.slice(3)) {
     let regrex = /[c|v|o|k]/g;

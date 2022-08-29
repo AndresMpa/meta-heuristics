@@ -21,9 +21,45 @@ const iteration = () => {
   }, 0);
 };
 
+const results = (time, options) => {
+  console.clear();
+
+  console.group('----------------Simulation results----------------');
+  console.group('Results:');
+  console.group(`Simulation:`);
+  console.log(`Simulation got a max cost of: ${simulation.cost}`);
+  console.log(`Simulation got a min volume of: ${simulation.volume}`);
+  console.log(`Simulation used methods:`);
+  console.log(simulation.methods);
+  console.log('Simulation got schema:');
+  console.log(simulation.schema);
+  console.groupEnd('Simulation got:');
+  console.groupEnd('Results:');
+
+  console.group('Performance');
+  console.group(`Simulation took:`);
+  console.log(`${time} miliseconds`);
+  console.log(`${iterations.length} iterations`);
+  console.groupEnd('Simulation took:');
+  console.groupEnd('Performance');
+
+  console.group('Extras');
+  console.log(
+    `Simulation terminated due to factiblility: ${simulation.factible}`
+  );
+  if (options.keep) {
+    console.log(`Find extra log information on ./logs/${options.id}.txt`);
+  }
+  console.groupEnd('Extra');
+
+  console.groupEnd('----------------Simulation result----------------');
+};
+
 const simulate = () => {
   const data = getSample();
   const options = cliHandler();
+
+  const timeStart = performance.now();
 
   fillUpToZero(data['cost'], simulation['schema']);
   updateVolume(data, simulation);
@@ -38,8 +74,18 @@ const simulate = () => {
   while (simulation['limitVolume'] >= simulation['volume']) {
     console.log(`Iteration ${iteration()}: `);
     generateNeighborhood(data, simulation);
-    iterations.push(simulation);
+    if (simulation['factible']) {
+      iterations.push(simulation);
+    }
   }
+
+  console.log('Simulation terminated');
+
+  const timeEnd = performance.now();
+
+  setTimeout(() => {
+    results(timeEnd - timeStart, options);
+  }, 1000);
 };
 
 simulate();

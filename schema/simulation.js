@@ -6,6 +6,8 @@ const updateSimulation = (simulation, choosenNeighbour) => {
   simulation['volume'] = choosenNeighbour['volume'];
   simulation['schema'] = choosenNeighbour['schema'];
   simulation['methods'] = choosenNeighbour['methods'];
+  simulation['factible'] =
+    choosenNeighbour['volume'] <= simulation['limitVolume'];
 };
 
 const generateNeighbour = (data, simulation) => {
@@ -23,13 +25,13 @@ const generateNeighborhood = (data, simulation, size = 3) => {
 
   console.group('Neighborhood');
   console.log(neighborhood);
-  console.groupEnd('Neighborhood')
+  console.groupEnd('Neighborhood');
 
   const choosenNeighbour = neighborhood[random(0, neighborhood.length)];
 
-  console.group("Choose neighborhood")
+  console.group('Choose neighborhood');
   console.log(choosenNeighbour);
-  console.groupEnd("Choose neighborhood")
+  console.groupEnd('Choose neighborhood');
 
   updateSimulation(simulation, choosenNeighbour);
 };
