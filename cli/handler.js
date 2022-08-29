@@ -1,7 +1,7 @@
 const cliHandler = () => {
   const options = {
     keep: false,
-    shema: 0,
+    schema: 0,
   };
   const argvs = process.argv;
   if (argvs.length > 4) {
