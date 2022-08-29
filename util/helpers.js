@@ -1,16 +1,28 @@
+/*
+  Return a random number
+*/
 const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
+/*
+  Mathematically rounds a number
+*/
 const round = (number) => {
   let roundedNumber = Number((Math.abs(number) * 100).toPrecision(15));
   return (Math.round(roundedNumber) / 100) * Math.sign(number);
 };
 
+/*
+  It fills an array (schema) in data size with zeros
+*/
 const fillUpToZero = (data, schema) => {
   data.forEach((_) => {
     schema.push(0);
   });
 };
 
+/*
+  It returns a path from anywhere to a specific directory
+*/
 const getCurrentPath = (currentDir, target) => {
   return process.cwd().indexOf(currentDir) !== -1
     ? `${process.cwd().substring(process.cwd().lastIndexOf('/'), -1)}/${target}`
@@ -46,4 +58,26 @@ const getIndexes = (rawData, targets) => {
   return indexes;
 };
 
-export { round, random, fillUpToZero, getGreatest, getIndexes, getCurrentPath };
+/*
+  Hamming distance between 2 arrays, then return
+  distance as a number
+*/
+const hammingDistance = (value, compare) => {
+  let distance = 0;
+  compare.forEach((value, index) => {
+    if (value[index] !== value) {
+      distance += 1;
+    }
+  });
+  return distance;
+};
+
+export {
+  round,
+  random,
+  getIndexes,
+  getGreatest,
+  fillUpToZero,
+  getCurrentPath,
+  hammingDistance,
+};
