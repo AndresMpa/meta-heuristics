@@ -55,7 +55,7 @@ const results = (result, time, options) => {
   console.groupEnd('Last neighbour:');
 
   if (options.keep) {
-    console.log(`Find extra log information on ./logs/${options.id}.txt`);
+    console.log(`Find extra log information on ./logs/${options.id}.json`);
   }
   console.groupEnd('Extra');
 
@@ -84,9 +84,12 @@ const simulate = () => {
     console.log(data);
 
     if (options.keep) {
-      iterations.push([data, generateNeighborhood(data, simulation)]);
+      iterations.push([
+        structuredClone(data),
+        structuredClone(generateNeighborhood(data, simulation)),
+      ]);
     } else {
-      iterations.push(generateNeighborhood(data, simulation));
+      iterations.push(structuredClone(generateNeighborhood(data, simulation)));
     }
   }
 
@@ -107,7 +110,7 @@ const simulate = () => {
   }, 1000);
 
   if (options.keep) {
-    makeFile(JSON.stringify(iterations), '.', 'logs/', options.id);
+    makeFile(JSON.stringify(iterations), 'json', 'logs/', '.', options.id);
   }
 };
 

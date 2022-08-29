@@ -41,12 +41,13 @@ const generateData = (dataLength = 60, top = [20, 60]) => {
 */
 const makeFile = (
   data,
-  basePath = 'dataHandlers',
+  ext = 'txt',
   targetDir = 'samples',
+  basePath = 'dataHandlers',
   identifier = Date.now()
 ) => {
   const path = getCurrentPath(basePath, targetDir);
-  const filePath = `${path}/${identifier}.txt`;
+  const filePath = `${path}/${identifier}.${ext}`;
   console.log(filePath);
 
   fs.writeFile(filePath, data, (error) => {
