@@ -39,15 +39,20 @@ const generateData = (dataLength = 60, top = [20, 60]) => {
 /*
   It generate a file to be use as sample with given data
 */
-const makeFile = (data) => {
-  const path = getCurrentPath('dataHandlers', 'samples');
-  const samplePath = `${path}/${Date.now()}.txt`;
-  console.log(samplePath);
+const makeFile = (
+  data,
+  basePath = 'dataHandlers',
+  targetDir = 'samples',
+  identifier = Date.now()
+) => {
+  const path = getCurrentPath(basePath, targetDir);
+  const filePath = `${path}/${identifier}.txt`;
+  console.log(filePath);
 
-  fs.writeFile(samplePath, JSON.stringify(data), (error) => {
+  fs.writeFile(filePath, data, (error) => {
     if (error) {
       console.error(error);
-      throw new Error('Error generating sample file');
+      throw new Error('Error generating file');
     }
   });
 };
@@ -55,12 +60,14 @@ const makeFile = (data) => {
 const generateSample = () => {
   try {
     const sampleData = generateData();
-    makeFile(sampleData);
+    makeFile(JSON.stringify(sampleData));
     console.log('Sample created successfully');
   } catch (error) {
     console.error(error);
     throw new Error('Error creating sample');
   }
 };
+
+export { makeFile };
 
 generateSample();
