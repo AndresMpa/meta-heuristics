@@ -22,8 +22,6 @@ const iteration = () => {
 };
 
 const results = (time, options) => {
-  console.clear();
-
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
