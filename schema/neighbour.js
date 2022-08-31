@@ -84,9 +84,9 @@ const generateNeighborhood = (data, simulation, size = 3) => {
   let choosenNeighbour = chooseNextNeighbour(neighborhood);
   checkNeighbour(choosenNeighbour, simulation, neighborhood);
 
-  console.group('Choosen neighborhood');
+  console.group('Chosen neighbour');
   console.log(choosenNeighbour);
-  console.groupEnd('Choosen neighborhood');
+  console.groupEnd('Chosen neighbour');
 
   updateSimulation(simulation, choosenNeighbour);
 
