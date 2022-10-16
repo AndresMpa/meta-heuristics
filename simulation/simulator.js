@@ -67,23 +67,29 @@ const simulate = (simulation, iterations) => {
 
   iterations.push(structuredClone(simulation));
 
+  // GRASP starts here
   while (
     simulation['limitVolume'] >= simulation['volume'] &&
     isZero(simulation['schema'])
   ) {
+    /*
     console.log(`Iteration ${iterations.length}: `);
     console.log('State of data:');
     console.log(data);
+    */
 
     if (options.keep) {
+      /*
       iterations.push([
         structuredClone(data),
         structuredClone(generateNeighborhood(data, simulation)),
       ]);
+      */
     } else {
       iterations.push(structuredClone(generateNeighborhood(data, simulation)));
     }
   }
+  // GRASP end here
 
   console.log('\n---------------Simulation terminated--------------\n');
 
