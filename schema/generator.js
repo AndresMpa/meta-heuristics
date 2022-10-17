@@ -1,5 +1,8 @@
 import { random, getIndexes, getGreatest } from '../util/helpers.js';
 
+/*
+  Update data for final simulation file
+*/
 const updateSampleData = (data, index) => {
   data['cost'][index] = null;
   data['volume'][index] = null;

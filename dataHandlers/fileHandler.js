@@ -58,6 +58,9 @@ const makeFile = (
   });
 };
 
+/*
+  Generate a sample under an structure
+*/
 const generateSample = () => {
   try {
     const sampleData = generateData();
