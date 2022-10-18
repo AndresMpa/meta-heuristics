@@ -1,6 +1,9 @@
 import { random, getCurrentPath } from '../util/helpers.js';
 import fs from 'fs';
 
+/*
+  Get data from a sample to load data into RAM
+*/
 const getSample = (lastSample = true) => {
   const path = getCurrentPath('dataHandlers', 'samples');
   const samples = fs.readdirSync(path);

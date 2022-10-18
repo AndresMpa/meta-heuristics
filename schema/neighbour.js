@@ -1,6 +1,10 @@
 import { random } from '../util/helpers.js';
 import { getSchema } from './generator.js';
 
+/*
+  Once a neighbour have been chosen this function simply
+  takes its data to update simulation
+*/
 const selectedNeighbour = (neighborhood, target, field) => {
   const selected = neighborhood.findIndex((neighbour) => {
     return neighbour[field] === target;
@@ -8,6 +12,9 @@ const selectedNeighbour = (neighborhood, target, field) => {
   return selected;
 };
 
+/*
+  Update simulation data to track progress
+*/
 const updateSimulation = (simulation, choosenNeighbour) => {
   simulation['cost'] = choosenNeighbour['cost'];
   simulation['volume'] = choosenNeighbour['volume'];
@@ -16,6 +23,10 @@ const updateSimulation = (simulation, choosenNeighbour) => {
   simulation['factible'] = choosenNeighbour['factible'];
 };
 
+/*
+  It improves a bit possibilities to get the better neighbour
+  form a neighborhood when simulation is reaching for the end
+*/
 const checkNeighbour = (neighbour, simulation, alternative) => {
   if (neighbour['volume'] > simulation['limitVolume']) {
     neighbour['factible'] = false;
@@ -34,6 +45,10 @@ const checkNeighbour = (neighbour, simulation, alternative) => {
   }
 };
 
+/*
+  It chose a neighbour from a neighborhood using
+  a random criterion
+*/
 const chooseNextNeighbour = (possible) => {
   const methods = ['c', 'v', 'o', 'k', 'r'];
   const method = methods[random(0, methods.length)];
@@ -64,6 +79,10 @@ const chooseNextNeighbour = (possible) => {
   return possible[index];
 };
 
+/*
+  This function creates a Banach's ball using data
+  from simulation
+*/
 const generateNeighbour = (data, simulation) => {
   const methods = ['c', 'v', 'o', 'k', 'r'];
   const method = methods[random(0, methods.length)];
@@ -72,6 +91,10 @@ const generateNeighbour = (data, simulation) => {
   return simulation;
 };
 
+/*
+  It creates a Banach's ball then it chose a neighbour from a
+  generated neighborhood under any IS,
+*/
 const generateNeighborhood = (data, simulation, size = 3) => {
   const neighborhood = [...Array(size).keys()].map(() => {
     return generateNeighbour(data, structuredClone(simulation));
@@ -84,9 +107,9 @@ const generateNeighborhood = (data, simulation, size = 3) => {
   let choosenNeighbour = chooseNextNeighbour(neighborhood);
   checkNeighbour(choosenNeighbour, simulation, neighborhood);
 
-  console.group('Choosen neighborhood');
+  console.group('Chosen neighbour');
   console.log(choosenNeighbour);
-  console.groupEnd('Choosen neighborhood');
+  console.groupEnd('Chosen neighbour');
 
   updateSimulation(simulation, choosenNeighbour);
 

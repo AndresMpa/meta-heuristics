@@ -1,5 +1,8 @@
 import { random, getIndexes, getGreatest } from '../util/helpers.js';
 
+/*
+  Update data for final simulation file
+*/
 const updateSampleData = (data, index) => {
   data['cost'][index] = null;
   data['volume'][index] = null;
@@ -7,6 +10,9 @@ const updateSampleData = (data, index) => {
   data['costVolume'][index] = null;
 };
 
+/*
+  Update volume for simulation
+*/
 const updateVolume = (data, simulation) => {
   const totalVolume = data['volume'].reduce((current, counter) => {
     return current + counter;
@@ -15,7 +21,7 @@ const updateVolume = (data, simulation) => {
   simulation['limitVolume'] = totalVolume / (2 * 4);
 };
 
-// It returns schemas under various options
+// It returns schemes under various options
 const getSchema = (
   data,
   schema,
