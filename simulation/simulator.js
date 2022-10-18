@@ -5,6 +5,9 @@ import { makeFile } from '../dataHandlers/fileHandler.js';
 import { getSample } from '../dataHandlers/store.js';
 import { cliHandler } from '../cli/handler.js';
 
+/*
+  It generates a simulation for 4 epochs
+*/
 const simulate = (simulation, iterations) => {
   const data = getSample();
   const options = cliHandler();
