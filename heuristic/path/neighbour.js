@@ -1,5 +1,5 @@
-import { random } from '../util/helpers.js';
-import { getSchema } from './generator.js';
+import { getSchema } from '../../schema/generator.js';
+import { random } from '../../util/helpers.js';
 
 /*
   Once a neighbour have been chosen this function simply

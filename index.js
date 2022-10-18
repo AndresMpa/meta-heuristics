@@ -1,4 +1,5 @@
-import { simulate } from './simulation/simulator.js';
+import { simulate } from './heuristic/path/neighborhoodPath.js';
+import { getProcessData } from './util/process.js';
 
 let epochs = 1;
 
@@ -16,7 +17,7 @@ const initSimulationData = () => {
   return [simulation, iterations];
 };
 
-while (epochs <= 4) {
+while (epochs <= getProcessData().EPOCHS) {
   console.log(
     `\n
     ---------------------------------------------------\n

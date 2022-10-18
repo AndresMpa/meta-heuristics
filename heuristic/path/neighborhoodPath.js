@@ -1,12 +1,17 @@
-import { isZero, results, fillUpToZero } from '../util/helpers.js';
-import { getSchema, updateVolume } from '../schema/generator.js';
-import { generateNeighborhood } from '../schema/neighbour.js';
-import { makeFile } from '../dataHandlers/fileHandler.js';
-import { getSample } from '../dataHandlers/store.js';
-import { cliHandler } from '../cli/handler.js';
+// Schemes handlers
+import { getSchema, updateVolume } from '../../schema/generator.js';
+import { generateNeighborhood } from './neighbour.js';
+// Utilities
+import { isZero, fillUpToZero } from '../../util/helpers.js';
+import { results } from '../../util/information.js';
+// Data handlers
+import { makeFile } from '../../dataHandlers/fileHandler.js';
+import { getSample } from '../../dataHandlers/store.js';
+// CLI options
+import { cliHandler } from '../../cli/handler.js';
 
 /*
-  It generates a simulation for 4 epochs
+  It generates a simulation for process epochs
 */
 const simulate = (simulation, iterations) => {
   const data = getSample();
