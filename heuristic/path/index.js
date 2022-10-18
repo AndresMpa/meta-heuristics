@@ -13,7 +13,7 @@ import { cliHandler } from '../../cli/handler.js';
 /*
   It generates a simulation for process epochs
 */
-const simulate = (simulation, iterations) => {
+const pathSimulation = (simulation, iterations) => {
   const data = getSample();
   const options = cliHandler();
 
@@ -74,4 +74,4 @@ const simulate = (simulation, iterations) => {
   }
 };
 
-export { simulate };
+export default { pathSimulation };
