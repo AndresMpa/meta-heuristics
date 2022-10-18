@@ -1,6 +1,22 @@
 import { random, getIndexes, getGreatest } from '../util/helpers.js';
 
 /*
+  Generate schemes using a generic structure
+*/
+const schemaGenerator = (method, template, flag = true) => {
+  let greatest = getGreatest(data[method], template, flag);
+  greatest = getIndexes(data[method], greatest);
+  greatest.forEach((index) => {
+    schema['schema'][index] = 1;
+    schema['cost'] += data['cost'][index];
+    schema['volume'] += data['volume'][index];
+
+    updateSampleData(data, index);
+  });
+  schema['methods'].push(method);
+};
+
+/*
   Update data for final simulation file
 */
 const updateSampleData = (data, index) => {
@@ -25,78 +41,24 @@ const updateVolume = (data, simulation) => {
 const getSchema = (
   data,
   schema,
-  option,
+  option = 'r',
   useTemplate = { use: true, template: [] }
 ) => {
   const template = useTemplate['use']
     ? [0, data['cost'].length * 0.1]
     : useTemplate['data'];
 
-  switch (option) {
+  const schemas = {
     // Get schema using the greatest costs
-    case 'c': {
-      let greatestCosts = getGreatest(data['cost'], template);
-      greatestCosts = getIndexes(data['cost'], greatestCosts);
-      greatestCosts.forEach((index) => {
-        schema['schema'][index] = 1;
-        schema['cost'] += data['cost'][index];
-        schema['volume'] += data['volume'][index];
-
-        updateSampleData(data, index);
-      });
-      schema['methods'].push('cost');
-      break;
-    }
-    // Get schema using the greatest volumes
-    case 'v': {
-      let greatestVolume = getGreatest(data['volume'], template, false);
-      greatestVolume = getIndexes(data['volume'], greatestVolume);
-      greatestVolume.forEach((index) => {
-        schema['schema'][index] = 1;
-        schema['cost'] += data['cost'][index];
-        schema['volume'] += data['volume'][index];
-
-        updateSampleData(data, index);
-      });
-      schema['methods'].push('volume');
-      break;
-    }
+    c: () => schemaGenerator('cost', template),
+    // Get schema using the minors volumes
+    v: () => schemaGenerator('volume', template, false),
     // Get schema using the greatest costs over volumes
-    case 'o': {
-      let greatestCostsVolumens = getGreatest(data['costVolume'], [
-        0,
-        template,
-      ]);
-      greatestCostsVolumens = getIndexes(
-        data['costVolume'],
-        greatestCostsVolumens
-      );
-      greatestCostsVolumens.forEach((index) => {
-        schema['schema'][index] = 1;
-        schema['cost'] += data['cost'][index];
-        schema['volume'] += data['volume'][index];
-
-        updateSampleData(data, index);
-      });
-      schema['methods'].push('costVolume');
-      break;
-    }
+    o: () => schemaGenerator('costVolume', [0, template]),
     // Get schema using the greatest k factors
-    case 'k': {
-      let greatestKFactor = getGreatest(data['kFactor'], template);
-      greatestKFactor = getIndexes(data['kFactor'], greatestKFactor);
-      greatestKFactor.forEach((index) => {
-        schema['schema'][index] = 1;
-        schema['cost'] += data['cost'][index];
-        schema['volume'] += data['volume'][index];
-
-        updateSampleData(data, index);
-      });
-      schema['methods'].push('kFactor');
-      break;
-    }
+    k: () => schemaGenerator('kFactor', template),
     // Get schema using random values
-    default: {
+    r: () => {
       [...Array(template[1]).keys()].forEach((_) => {
         let index = random(0, data['cost'].length);
         schema['schema'][index] = 1;
@@ -106,9 +68,10 @@ const getSchema = (
         updateSampleData(data, index);
       });
       schema['methods'].push('random');
-      break;
-    }
-  }
+    },
+  };
+
+  schemas[option];
 };
 
 export { getSchema, updateVolume };
