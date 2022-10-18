@@ -1,6 +1,7 @@
-import { simulate } from './heuristic/path/neighborhoodPath.js';
 import { getProcessData } from './util/process.js';
+import { simulate } from './heuristic/index.js';
 
+const simulationProcess = Object.values(simulate())[0];;
 let epochs = 1;
 
 const initSimulationData = () => {
@@ -26,6 +27,6 @@ while (epochs <= getProcessData().EPOCHS) {
     `
   );
   let epochData = initSimulationData();
-  simulate(epochData[0], epochData[1]);
+  simulationProcess(epochData[0], epochData[1]);
   epochs += 1;
 }
