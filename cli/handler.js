@@ -1,3 +1,9 @@
+/*
+  It gives package.json commands some
+  important utilities to handle with the
+  project
+*/
+
 const cliHandler = () => {
   const options = {
     keep: false,
@@ -23,6 +29,10 @@ const cliHandler = () => {
   return options;
 };
 
+/*
+  Utility for big screen used to display data in a
+  pretty way
+*/
 const logsForBigScreens = (data) => {
   console.table({
     Cost: data['cost'],
