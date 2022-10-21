@@ -1,4 +1,5 @@
 import { round, random, getCurrentPath } from '../util/helpers.js';
+import { getProcessData } from '../util/process.js';
 import fs from 'fs';
 
 /*
@@ -47,9 +48,9 @@ const makeFile = (
   identifier = Date.now()
 ) => {
   const path = getCurrentPath(basePath, targetDir);
-  const filePath = `${path}/${identifier}.${ext}`;
-  console.log(filePath);
-
+  const filePath = `${path}/${identifier}${getProcessData().HEURISTIC}${
+    getProcessData().EPOCHS
+  }.${ext}`;
   fs.writeFile(filePath, data, (error) => {
     if (error) {
       console.error(error);

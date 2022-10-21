@@ -19,3 +19,10 @@ schema definition by using options on this table
 
 Default `npm run start` and `npm run start k` uses randomness to
 defines the schema
+
+Then run a virtual env to get graphics
+
+```
+python3 -m venv graphics
+source graphics/bin/activate
+```
