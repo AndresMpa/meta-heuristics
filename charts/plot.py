@@ -1,10 +1,14 @@
 from dotenv import dotenv_values
 import matplotlib.pyplot as plt
 from datetime import datetime
+import getPlotData as data
 
 config = dotenv_values(".env")
 
 # Extracting data from JSON file
+file = data.getData()
+print(file)
+
 x = [5, 7, 8, 7, 2, 17, 2, 9, 4, 11, 12, 9, 6]
 y = [9, 6, 7, 8, 1, 6, 3, 7, 4, 8, 7, 5, 6]
 
@@ -14,7 +18,8 @@ method = list(config.items())[1][1]
 plt.figure(figsize=(8, 6), dpi=80)
 
 # Defining some extra data
-plt.title('Created on {} using "{}" method'.format(datetime.now().strftime("%d/%m/%Y"), method))
+plt.title('Created on {} using "{}" method'.format(
+    datetime.now().strftime("%d/%m/%Y"), method))
 plt.xlabel('Year')
 plt.ylabel('Some measurements')
 plt.figtext(0.73, 0.835, "Running {} epochs".format(epochs))
