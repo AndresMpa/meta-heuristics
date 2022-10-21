@@ -1,7 +1,9 @@
+import { getProcessData } from './process.js';
+
 /*
   A simple utility to show information under an structure
 */
-const results = (simulation, result, iterations, time, options) => {
+const pathResults = (simulation, result, iterations, time, options) => {
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
@@ -40,11 +42,15 @@ const results = (simulation, result, iterations, time, options) => {
   console.groupEnd('Last neighbour:');
 
   if (options.keep) {
-    console.log(`Find extra log information on ./logs/${options.id}.json`);
+    console.log(
+      `Find extra log information on ./logs/${options.id}_for_"${
+        getProcessData().HEURISTIC
+      }"_using_${getProcessData().EPOCHS}_epochs.json`
+    );
   }
   console.groupEnd('Extra');
 
   console.groupEnd('----------------Simulation result----------------');
 };
 
-export { results };
+export { pathResults };

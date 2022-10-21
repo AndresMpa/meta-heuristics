@@ -1,8 +1,9 @@
 import { getProcessData } from './util/process.js';
 import { simulate } from './heuristic/index.js';
 
-const simulationProcess = Object.values(simulate())[0];;
+const simulationProcess = Object.values(simulate())[0];
 let epochs = 1;
+let epochData;
 
 const initSimulationData = () => {
   let iterations = [];
@@ -26,7 +27,7 @@ while (epochs <= getProcessData().EPOCHS) {
     ---------------------------------------------------\n
     `
   );
-  let epochData = initSimulationData();
+  epochData = initSimulationData();
   simulationProcess(epochData[0], epochData[1]);
   epochs += 1;
 }

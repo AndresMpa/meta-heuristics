@@ -1,9 +1,19 @@
-import { random, getIndexes, getGreatest } from '../util/helpers.js';
+// CLI options
+import { cliHandler, logsForBigScreens } from '../cli/handler.js';
+// Data handlers
+import { getSample } from '../dataHandlers/store.js';
+// Utilities
+import {
+  random,
+  getIndexes,
+  getGreatest,
+  fillUpToZero,
+} from '../util/helpers.js';
 
 /*
   Generate schemes using a generic structure
 */
-const schemaGenerator = (method, template, flag = true) => {
+const schemaGenerator = (schema, data, method, template, flag = true) => {
   let greatest = getGreatest(data[method], template, flag);
   greatest = getIndexes(data[method], greatest);
   greatest.forEach((index) => {
@@ -50,13 +60,13 @@ const getSchema = (
 
   const schemas = {
     // Get schema using the greatest costs
-    c: () => schemaGenerator('cost', template),
+    c: () => schemaGenerator(schema, data, 'cost', template),
     // Get schema using the minors volumes
-    v: () => schemaGenerator('volume', template, false),
+    v: () => schemaGenerator(schema, data, 'volume', template, false),
     // Get schema using the greatest costs over volumes
-    o: () => schemaGenerator('costVolume', [0, template]),
+    o: () => schemaGenerator(schema, data, 'costVolume', [0, template]),
     // Get schema using the greatest k factors
-    k: () => schemaGenerator('kFactor', template),
+    k: () => schemaGenerator(schema, data, 'kFactor', template),
     // Get schema using random values
     r: () => {
       [...Array(template[1]).keys()].forEach((_) => {
@@ -71,7 +81,18 @@ const getSchema = (
     },
   };
 
-  schemas[option];
+  schemas[option]();
 };
 
-export { getSchema, updateVolume };
+const getInitialSchema = (simulation) => {
+  const data = getSample();
+  const options = cliHandler();
+
+  fillUpToZero(data['cost'], simulation['schema']);
+  updateVolume(data, simulation);
+  getSchema(data, simulation, options['schema'][0]);
+
+  return [data, options];
+};
+
+export { getSchema, updateVolume, getInitialSchema };
