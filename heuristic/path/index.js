@@ -1,28 +1,21 @@
 // Schemes handlers
-import { getSchema, updateVolume } from '../../schema/generator.js';
+import { getInitialSchema } from '../../schema/generator.js';
 import { generateNeighborhood } from './neighbour.js';
 // Utilities
-import { isZero, fillUpToZero } from '../../util/helpers.js';
-import { results } from '../../util/information.js';
+import { pathResults } from '../../util/information.js';
+import { isZero } from '../../util/helpers.js';
 // Data handlers
 import { makeFile } from '../../dataHandlers/fileHandler.js';
-import { getSample } from '../../dataHandlers/store.js';
-// CLI options
-import { cliHandler } from '../../cli/handler.js';
 
 /*
   It generates a simulation for process epochs
 */
 const pathSimulation = (simulation, iterations) => {
-  const data = getSample();
-  const options = cliHandler();
+  const initialSchema = getInitialSchema(simulation);
+  const data = initialSchema[0];
+  const options = initialSchema[1];
 
   const timeStart = performance.now();
-
-  fillUpToZero(data['cost'], simulation['schema']);
-  updateVolume(data, simulation);
-
-  getSchema(data, simulation, options['schema'][0]);
 
   console.log(`Iteration ${simulation['methods'].length - 1}: Schema`);
   console.log(simulation);
@@ -58,25 +51,23 @@ const pathSimulation = (simulation, iterations) => {
   const timeEnd = performance.now();
 
   if (options.keep) {
-    results(
+    pathResults(
       simulation,
       iterations[iterations.length - 2][1],
       iterations.length,
       timeEnd - timeStart,
       options
     );
+
+    makeFile(JSON.stringify(iterations), 'json', 'logs/', '.', options.id);
   } else {
-    results(
+    pathResults(
       simulation,
       iterations[iterations.length - 2],
       iterations.length,
       timeEnd - timeStart,
       options
     );
-  }
-
-  if (options.keep) {
-    makeFile(JSON.stringify(iterations), 'json', 'logs/', '.', options.id);
   }
 };
 
