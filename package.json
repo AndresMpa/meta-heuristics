@@ -5,11 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "init": "mkdir samples logs plots 2> /dev/null",
     "clean": "rm ./samples/*; rm ./logs/*; clear;",
     "gen": "node ./dataHandlers/generateSample.js",
-    "init": "mkdir samples logs plots 2> /dev/null",
     "image": "node ./charts/generatePlot.js",
-    "log": "node index.js > log.txt",
+    "log": "bash ./util/logger.sh",
     "start": "node index.js"
   },
   "repository": {
