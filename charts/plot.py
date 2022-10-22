@@ -6,7 +6,7 @@ import getPlotData as data
 config = dotenv_values(".env")
 
 # Extracting data from JSON file
-file = data.getData()
+file = data.cleanData()
 print(file)
 
 x = [5, 7, 8, 7, 2, 17, 2, 9, 4, 11, 12, 9, 6]
