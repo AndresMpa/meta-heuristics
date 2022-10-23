@@ -96,12 +96,16 @@ const generateNeighbour = (data, simulation) => {
   It creates a Banach's ball then it chose a neighbour from a
   generated neighborhood under any IS,
 */
-const generateNeighborhood = (data, simulation, size = 3) => {
+const generateNeighborhood = (
+  data,
+  simulation,
+  size = getProcessData().SOLUTION_SIZE
+) => {
   const neighborhood = [...Array(size).keys()].map(() => {
     return generateNeighbour(data, structuredClone(simulation));
   });
 
-  if (getProcessData().LOGGER === "1") {
+  if (getProcessData().LOGGER === '1') {
     console.group('Neighborhood');
     console.log(neighborhood);
     console.groupEnd('Neighborhood');
@@ -110,7 +114,7 @@ const generateNeighborhood = (data, simulation, size = 3) => {
   let choosenNeighbour = chooseNextNeighbour(neighborhood);
   checkNeighbour(choosenNeighbour, simulation, neighborhood);
 
-  if (getProcessData().LOGGER === "1") {
+  if (getProcessData().LOGGER === '1') {
     console.group('Choosen neighborhood');
     console.log(choosenNeighbour);
     console.groupEnd('Choosen neighborhood');
