@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "init": "mkdir samples logs plots plotData 2> /dev/null",
+    "init": "mkdir samples logs plots 2> /dev/null",
     "clean": "rm ./samples/*; rm ./logs/*; clear;",
     "gen": "node ./dataHandlers/generateSample.js",
     "image": "node ./charts/generatePlot.js",
