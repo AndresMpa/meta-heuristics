@@ -59,13 +59,24 @@ const getIndexes = (rawData, targets) => {
 };
 
 /*
+  Update volume for simulation
+*/
+const updateVolume = (data, simulation) => {
+  const totalVolume = data['volume'].reduce((current, counter) => {
+    return current + counter;
+  }, 0);
+
+  simulation['limitVolume'] = totalVolume / (2 * 4);
+};
+
+/*
   Hamming distance between 2 arrays, then return
   distance as a number
 */
-const hammingDistance = (value, compare) => {
+const hammingDistance = (data, compare) => {
   let distance = 0;
   compare.forEach((value, index) => {
-    if (value[index] !== value) {
+    if (data[index] !== value) {
       distance += 1;
     }
   });
@@ -90,6 +101,7 @@ export {
   isZero,
   getIndexes,
   getGreatest,
+  updateVolume,
   fillUpToZero,
   getCurrentPath,
   hammingDistance,
