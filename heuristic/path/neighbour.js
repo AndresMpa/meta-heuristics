@@ -1,3 +1,4 @@
+import { getProcessData } from '../../util/process.js';
 import { getSchema } from '../../schema/generator.js';
 import { random } from '../../util/helpers.js';
 
@@ -100,16 +101,20 @@ const generateNeighborhood = (data, simulation, size = 3) => {
     return generateNeighbour(data, structuredClone(simulation));
   });
 
-  console.group('Neighborhood');
-  console.log(neighborhood);
-  console.groupEnd('Neighborhood');
+  if (getProcessData().LOGGER === "1") {
+    console.group('Neighborhood');
+    console.log(neighborhood);
+    console.groupEnd('Neighborhood');
+  }
 
   let choosenNeighbour = chooseNextNeighbour(neighborhood);
   checkNeighbour(choosenNeighbour, simulation, neighborhood);
 
-  console.group('Chosen neighbour');
-  console.log(choosenNeighbour);
-  console.groupEnd('Chosen neighbour');
+  if (getProcessData().LOGGER === "1") {
+    console.group('Choosen neighborhood');
+    console.log(choosenNeighbour);
+    console.groupEnd('Choosen neighborhood');
+  }
 
   updateSimulation(simulation, choosenNeighbour);
 

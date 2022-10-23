@@ -1,5 +1,5 @@
 // CLI options
-import { cliHandler, logsForBigScreens } from '../cli/handler.js';
+import { logsForBigScreens } from '../cli/handler.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
 // Utilities
@@ -84,15 +84,14 @@ const getSchema = (
   schemas[option]();
 };
 
-const getInitialSchema = (simulation) => {
+const getInitialSchema = (simulation, options) => {
   const data = getSample();
-  const options = cliHandler();
 
   fillUpToZero(data['cost'], simulation['schema']);
   updateVolume(data, simulation);
   getSchema(data, simulation, options['schema'][0]);
 
-  return [data, options];
+  return data;
 };
 
 export { getSchema, updateVolume, getInitialSchema };

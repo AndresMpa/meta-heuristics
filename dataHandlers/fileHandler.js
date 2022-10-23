@@ -42,15 +42,16 @@ const generateData = (dataLength = 60, top = [20, 60]) => {
 */
 const makeFile = (
   data,
+  epochs,
+  identifier = Date.now(),
   ext = 'txt',
   targetDir = 'samples',
   basePath = 'dataHandlers',
-  identifier = Date.now()
 ) => {
   const path = getCurrentPath(basePath, targetDir);
-  const filePath = `${path}/${identifier}${getProcessData().HEURISTIC}${
-    getProcessData().EPOCHS
-  }.${ext}`;
+  const filePath = `${path}/${identifier}_for_"${
+    getProcessData().HEURISTIC
+  }"_running_epoch_${epochs}_of_${getProcessData().EPOCHS}.${ext}`;
   fs.writeFile(filePath, data, (error) => {
     if (error) {
       console.error(error);

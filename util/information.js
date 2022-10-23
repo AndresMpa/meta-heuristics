@@ -3,7 +3,7 @@ import { getProcessData } from './process.js';
 /*
   A simple utility to show information under an structure
 */
-const pathResults = (simulation, result, iterations, time, options) => {
+const pathResults = (simulation, result, iterations, time, epoch, options) => {
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
@@ -45,7 +45,7 @@ const pathResults = (simulation, result, iterations, time, options) => {
     console.log(
       `Find extra log information on ./logs/${options.id}_for_"${
         getProcessData().HEURISTIC
-      }"_using_${getProcessData().EPOCHS}_epochs.json`
+      }"_running_epoch_${epoch}_of_${getProcessData().EPOCHS}.json`
     );
   }
   console.groupEnd('Extra');
