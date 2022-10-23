@@ -47,10 +47,6 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
     console.log('\n---------------Simulation terminated--------------\n');
   }
 
-  if (iterations.length === 1) {
-    iterations.push(iterations[0]);
-  }
-
   const timeEnd = performance.now();
 
   if (options.keep) {
