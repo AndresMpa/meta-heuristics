@@ -19,8 +19,8 @@ const schemaGenerator = (schema, data, method, template, flag = true) => {
   greatest = getIndexes(data[method], greatest);
   greatest.forEach((index) => {
     schema['schema'][index] = 1;
-    schema['cost'] += data['cost'][index];
-    schema['volume'] += data['volume'][index];
+    schema['cost'][0] += data['cost'][index];
+    schema['volume'][0] += data['volume'][index];
 
     updateSampleData(data, index);
   });
@@ -62,8 +62,8 @@ const getSchema = (
       [...Array(template[1]).keys()].forEach((_) => {
         let index = random(0, data['cost'].length);
         schema['schema'][index] = 1;
-        schema['cost'] += data['cost'][index];
-        schema['volume'] += data['volume'][index];
+        schema['cost'][0] += data['cost'][index];
+        schema['volume'][0] += data['volume'][index];
 
         updateSampleData(data, index);
       });
