@@ -8,8 +8,9 @@ import { random } from '../../util/helpers.js';
 */
 const selectedNeighbour = (neighborhood, target, field) => {
   const selected = neighborhood.findIndex((neighbour) => {
-    return neighbour[field] === target;
+    return neighbour[field][0] === target;
   });
+
   return selected;
 };
 
@@ -19,9 +20,10 @@ const selectedNeighbour = (neighborhood, target, field) => {
 const updateSimulation = (simulation, choosenNeighbour) => {
   simulation['cost'] = choosenNeighbour['cost'];
   simulation['volume'] = choosenNeighbour['volume'];
+  simulation['factible'] = choosenNeighbour['factible'];
+
   simulation['schema'] = choosenNeighbour['schema'];
   simulation['methods'] = choosenNeighbour['methods'];
-  simulation['factible'] = choosenNeighbour['factible'];
 };
 
 /*
@@ -29,20 +31,21 @@ const updateSimulation = (simulation, choosenNeighbour) => {
   form a neighborhood when simulation is reaching for the end
 */
 const checkNeighbour = (neighbour, simulation, alternative) => {
-  if (neighbour['volume'] > simulation['limitVolume']) {
-    neighbour['factible'] = false;
+  if (neighbour['volume'][0] > simulation['limitVolume']) {
+    neighbour['factible'][0] = false;
 
     alternative.forEach((possibleOtherNeighbour) => {
-      if (possibleOtherNeighbour['volume'] < simulation['limitVolume']) {
-        neighbour['cost'] = possibleOtherNeighbour['cost'];
-        neighbour['volume'] = possibleOtherNeighbour['volume'];
+      if (possibleOtherNeighbour['volume'][0] < simulation['limitVolume']) {
+        neighbour['cost'][0] = possibleOtherNeighbour['cost'][0];
+        neighbour['volume'][0] = possibleOtherNeighbour['volume'][0];
+        neighbour['factible'][0] = possibleOtherNeighbour['factible'][0];
+
         neighbour['schema'] = possibleOtherNeighbour['schema'];
         neighbour['methods'] = possibleOtherNeighbour['methods'];
-        neighbour['factible'] = possibleOtherNeighbour['factible'];
       }
     });
   } else {
-    neighbour['factible'] = true;
+    neighbour['factible'][0] = true;
   }
 };
 
@@ -51,22 +54,21 @@ const checkNeighbour = (neighbour, simulation, alternative) => {
   a random criterion
 */
 const chooseNextNeighbour = (possible) => {
-  const methods = ['c', 'v', 'o', 'k', 'r'];
+  const methods = ['c', 'v']; //'o', 'k', 'r'];
   const method = methods[random(0, methods.length)];
-
   let index = 0;
 
   switch (method) {
     case 'c': {
       const maxCost = Math.max(
-        ...possible.map((neighbour) => neighbour['cost'])
+        ...possible.map((neighbour) => neighbour['cost'][0])
       );
       index = selectedNeighbour(possible, maxCost, 'cost');
       break;
     }
     case 'v': {
       const minVolume = Math.min(
-        ...possible.map((neighbour) => neighbour['volume'])
+        ...possible.map((neighbour) => neighbour['volume'][0])
       );
       index = selectedNeighbour(possible, minVolume, 'volume');
       break;
@@ -76,7 +78,6 @@ const chooseNextNeighbour = (possible) => {
       break;
     }
   }
-
   return possible[index];
 };
 
@@ -87,6 +88,13 @@ const chooseNextNeighbour = (possible) => {
 const generateNeighbour = (data, simulation) => {
   const methods = ['c', 'v', 'o', 'k', 'r'];
   const method = methods[random(0, methods.length)];
+
+  if (simulation['cost'].length > 1) {
+    simulation['factible'] = simulation['factible'][0];
+    simulation['volume'] = simulation['volume'][0];
+    simulation['cost'] = simulation['cost'][0];
+  }
+
   getSchema(data, simulation, method, { use: false, data: [0, 1] });
 
   return simulation;
@@ -96,10 +104,17 @@ const generateNeighbour = (data, simulation) => {
   It creates a Banach's ball then it chose a neighbour from a
   generated neighborhood under any IS,
 */
-const generateNeighborhood = (data, simulation, size = 3) => {
-  const neighborhood = [...Array(size).keys()].map(() => {
-    return generateNeighbour(data, structuredClone(simulation));
-  });
+const generateNeighborhood = (
+  data,
+  simulation,
+  size = getProcessData().SOLUTION_SIZE
+) => {
+  const neighborhood = [];
+  let index;
+
+  for (index = 0; index < size; index++) {
+    neighborhood.push(generateNeighbour(data, structuredClone(simulation)));
+  }
 
   if (getProcessData().LOGGER === "1") {
     console.group('Neighborhood');
