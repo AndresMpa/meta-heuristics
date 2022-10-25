@@ -7,6 +7,7 @@ import {
   random,
   getIndexes,
   getGreatest,
+  updateVolume,
   fillUpToZero,
 } from '../util/helpers.js';
 
@@ -34,17 +35,6 @@ const updateSampleData = (data, index) => {
   data['volume'][index] = null;
   data['kFactor'][index] = null;
   data['costVolume'][index] = null;
-};
-
-/*
-  Update volume for simulation
-*/
-const updateVolume = (data, simulation) => {
-  const totalVolume = data['volume'].reduce((current, counter) => {
-    return current + counter;
-  }, 0);
-
-  simulation['limitVolume'] = totalVolume / (2 * 4);
 };
 
 // It returns schemes under various options
