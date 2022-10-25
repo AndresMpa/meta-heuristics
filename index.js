@@ -10,19 +10,19 @@ let epochData;
 const initSimulationData = () => {
   let iterations = [];
   let simulation = {
-    factible: true,
+    factible: [true],
     methods: [],
     schema: [],
 
     limitVolume: 0,
-    volume: 0,
-    cost: 0,
+    volume: [0],
+    cost: [0],
   };
   return [simulation, iterations];
 };
 
 while (epochs <= getProcessData().EPOCHS) {
-  if (getProcessData().LOGGER === "1") {
+  if (getProcessData().LOGGER === '1') {
     console.log(
       `\n
     ---------------------------------------------------\n

@@ -4,11 +4,15 @@ import { getProcessData } from './process.js';
   A simple utility to show information under an structure
 */
 const pathResults = (simulation, result, iterations, time, epoch, options) => {
+  if (result[1]) {
+    result = result[1];
+  }
+
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
   console.log(`Simulation got a max cost of: ${result.cost}`);
-  console.log(`Simulation got a min volume of: ${result.volume}`);
+  console.log(`Simulation got a min volume of: ${result.volume[0]}`);
   console.log(`Simulation fill up limit volume of: ${result.limitVolume}`);
   console.log(`Simulation used methods:`);
   console.log(result.methods);
@@ -26,12 +30,12 @@ const pathResults = (simulation, result, iterations, time, epoch, options) => {
 
   console.group('Extras');
   console.log(
-    `Simulation terminated due to factiblility: ${simulation.factible}`
+    `Simulation terminated due to factiblility: ${simulation.factible[0]}`
   );
 
   console.group(`Last neighbour:`);
-  console.log(`Neighbour suggested a cost of: ${simulation.cost}`);
-  console.log(`Neighbour suggested a volume of: ${simulation.volume}`);
+  console.log(`Neighbour suggested a cost of: ${simulation.cost[0]}`);
+  console.log(`Neighbour suggested a volume of: ${simulation.volume[0]}`);
   console.log(
     `Neighbour used method: ${
       simulation.methods[simulation.methods.length - 1]

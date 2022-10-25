@@ -9,25 +9,34 @@ import { isZero } from '../../util/helpers.js';
 import { makeFile } from '../../dataHandlers/fileHandler.js';
 
 /*
+  Let simulation run when I meet the constrains
+*/
+const running = (simulation) => {
+  let index = simulation['volume'].length - 1;
+  let state = false;
+  if (simulation['limitVolume'] >= simulation['volume'][index]) {
+    if (isZero(simulation['schema'])) {
+      state = true;
+    }
+  }
+  return state;
+};
+
+/*
   It generates a simulation for process epochs
 */
 const pathSimulation = (simulation, iterations, epoch, options) => {
   const timeStart = performance.now();
-  const initialSchema = getInitialSchema(simulation, options);
-  const data = initialSchema;
+  const data = getInitialSchema(simulation, options);
 
   if (getProcessData().LOGGER === '1') {
     console.log(`Iteration ${simulation['methods'].length - 1}: Schema`);
     console.log(simulation);
   }
 
-  iterations.push(structuredClone(simulation));
+  iterations.push(structuredClone([data, simulation]));
 
-  // GRASP starts here
-  while (
-    simulation['limitVolume'] >= simulation['volume'] &&
-    isZero(simulation['schema'])
-  ) {
+  while (running(simulation)) {
     if (getProcessData().LOGGER === '1') {
       console.log(`Iteration ${iterations.length}: `);
       console.log('State of data:');
@@ -53,18 +62,17 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
 
   const timeEnd = performance.now();
 
+  if (getProcessData().LOGGER === '1') {
+    pathResults(
+      simulation,
+      iterations[iterations.length - 2],
+      iterations.length,
+      timeEnd - timeStart,
+      epoch,
+      options
+    );
+  }
   if (options.keep) {
-    if (getProcessData().LOGGER === '1') {
-      pathResults(
-        simulation,
-        iterations[iterations.length - 2][1],
-        iterations.length,
-        timeEnd - timeStart,
-        epoch,
-        options
-      );
-    }
-
     makeFile(
       JSON.stringify(iterations),
       epoch,
@@ -73,17 +81,6 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
       'logs/',
       '.'
     );
-  } else {
-    if (getProcessData().LOGGER === '1') {
-      pathResults(
-        simulation,
-        iterations[iterations.length - 2],
-        iterations.length,
-        timeEnd - timeStart,
-        epoch,
-        options
-      );
-    }
   }
 };
 
