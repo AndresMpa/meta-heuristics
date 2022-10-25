@@ -12,6 +12,7 @@ import {
   hammingDistance,
 } from '../util/helpers.js';
 
+// Get empty DNA string of chromosomes
 const getDNA = (data, simulation, size) => {
   let dna = {
     genotype: [],
@@ -24,7 +25,7 @@ const getDNA = (data, simulation, size) => {
     dna['genotype'].push(dna['schema']);
   }
 
-  simulation['schema'] = dna['genotype'];
+  simulation['schema'].push(dna['genotype']);
 
   delete dna['schema'];
   delete dna['genotype'];
@@ -68,7 +69,10 @@ const getInitialPopulation = (
 
   getDNA(data, simulation, size);
   updateVolume(data, simulation);
-  inbreedingHandler(data, simulation);
+
+  console.log(simulation);
+
+  //inbreedingHandler(data, simulation);
 
   const population = [];
   return population;
