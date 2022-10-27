@@ -3,12 +3,16 @@ import { getProcessData } from './process.js';
 /*
   A simple utility to show information under an structure
 */
-const pathResults = (simulation, result, iterations, time, options) => {
+const pathResults = (simulation, result, iterations, time, epoch, options) => {
+  if (result[1]) {
+    result = result[1];
+  }
+
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
   console.log(`Simulation got a max cost of: ${result.cost}`);
-  console.log(`Simulation got a min volume of: ${result.volume}`);
+  console.log(`Simulation got a min volume of: ${result.volume[0]}`);
   console.log(`Simulation fill up limit volume of: ${result.limitVolume}`);
   console.log(`Simulation used methods:`);
   console.log(result.methods);
@@ -26,12 +30,12 @@ const pathResults = (simulation, result, iterations, time, options) => {
 
   console.group('Extras');
   console.log(
-    `Simulation terminated due to factiblility: ${simulation.factible}`
+    `Simulation terminated due to factiblility: ${simulation.factible[0]}`
   );
 
   console.group(`Last neighbour:`);
-  console.log(`Neighbour suggested a cost of: ${simulation.cost}`);
-  console.log(`Neighbour suggested a volume of: ${simulation.volume}`);
+  console.log(`Neighbour suggested a cost of: ${simulation.cost[0]}`);
+  console.log(`Neighbour suggested a volume of: ${simulation.volume[0]}`);
   console.log(
     `Neighbour used method: ${
       simulation.methods[simulation.methods.length - 1]
@@ -45,7 +49,7 @@ const pathResults = (simulation, result, iterations, time, options) => {
     console.log(
       `Find extra log information on ./logs/${options.id}_for_"${
         getProcessData().HEURISTIC
-      }"_using_${getProcessData().EPOCHS}_epochs.json`
+      }"_running_epoch_${epoch}_of_${getProcessData().EPOCHS}.json`
     );
   }
   console.groupEnd('Extra');
@@ -53,4 +57,19 @@ const pathResults = (simulation, result, iterations, time, options) => {
   console.groupEnd('----------------Simulation result----------------');
 };
 
-export { pathResults };
+const geneticResults = (
+  simulation,
+  result,
+  iterations,
+  time,
+  epoch,
+  options
+) => {
+  console.group('----------------Simulation results----------------');
+  console.log(result);
+  console.groupEnd('----------------Simulation result----------------');
+};
+
+const geneticInteration = (iterations) => {};
+
+export { pathResults, geneticResults, geneticInteration };

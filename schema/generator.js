@@ -1,5 +1,5 @@
 // CLI options
-import { cliHandler, logsForBigScreens } from '../cli/handler.js';
+import { logsForBigScreens } from '../cli/handler.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
 // Utilities
@@ -7,6 +7,7 @@ import {
   random,
   getIndexes,
   getGreatest,
+  updateVolume,
   fillUpToZero,
 } from '../util/helpers.js';
 
@@ -18,8 +19,8 @@ const schemaGenerator = (schema, data, method, template, flag = true) => {
   greatest = getIndexes(data[method], greatest);
   greatest.forEach((index) => {
     schema['schema'][index] = 1;
-    schema['cost'] += data['cost'][index];
-    schema['volume'] += data['volume'][index];
+    schema['cost'][0] += data['cost'][index];
+    schema['volume'][0] += data['volume'][index];
 
     updateSampleData(data, index);
   });
@@ -34,17 +35,6 @@ const updateSampleData = (data, index) => {
   data['volume'][index] = null;
   data['kFactor'][index] = null;
   data['costVolume'][index] = null;
-};
-
-/*
-  Update volume for simulation
-*/
-const updateVolume = (data, simulation) => {
-  const totalVolume = data['volume'].reduce((current, counter) => {
-    return current + counter;
-  }, 0);
-
-  simulation['limitVolume'] = totalVolume / (2 * 4);
 };
 
 // It returns schemes under various options
@@ -72,8 +62,8 @@ const getSchema = (
       [...Array(template[1]).keys()].forEach((_) => {
         let index = random(0, data['cost'].length);
         schema['schema'][index] = 1;
-        schema['cost'] += data['cost'][index];
-        schema['volume'] += data['volume'][index];
+        schema['cost'][0] += data['cost'][index];
+        schema['volume'][0] += data['volume'][index];
 
         updateSampleData(data, index);
       });
@@ -84,15 +74,14 @@ const getSchema = (
   schemas[option]();
 };
 
-const getInitialSchema = (simulation) => {
+const getInitialSchema = (simulation, options) => {
   const data = getSample();
-  const options = cliHandler();
 
   fillUpToZero(data['cost'], simulation['schema']);
   updateVolume(data, simulation);
   getSchema(data, simulation, options['schema'][0]);
 
-  return [data, options];
+  return data;
 };
 
 export { getSchema, updateVolume, getInitialSchema };

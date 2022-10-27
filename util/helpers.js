@@ -1,3 +1,5 @@
+import { getProcessData } from './process.js';
+
 /*
   Return a random number
 */
@@ -59,13 +61,24 @@ const getIndexes = (rawData, targets) => {
 };
 
 /*
+  Update volume for simulation
+*/
+const updateVolume = (data, simulation) => {
+  const totalVolume = data['volume'].reduce((current, counter) => {
+    return current + counter;
+  }, 0);
+
+  simulation['limitVolume'] = totalVolume * getProcessData().BACKPACK;
+};
+
+/*
   Hamming distance between 2 arrays, then return
   distance as a number
 */
-const hammingDistance = (value, compare) => {
+const hammingDistance = (data, compare) => {
   let distance = 0;
   compare.forEach((value, index) => {
-    if (value[index] !== value) {
+    if (data[index] !== value) {
       distance += 1;
     }
   });
@@ -84,12 +97,24 @@ const isZero = (array) => {
   return zero === 0 ? true : false;
 };
 
+/*
+  Calculate the dot product between values from data
+*/
+const dotProduct = (schema, data) => {
+  const total = schema.reduce((previous, current, index) => {
+    return (previous += current * data[index]);
+  });
+  return total;
+};
+
 export {
   round,
   random,
   isZero,
+  dotProduct,
   getIndexes,
   getGreatest,
+  updateVolume,
   fillUpToZero,
   getCurrentPath,
   hammingDistance,
