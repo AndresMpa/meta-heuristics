@@ -91,8 +91,6 @@ const getInitialPopulation = (
 
   simulation['methods'].push('Initial');
 
-  console.log(simulation);
-
   return data;
 };
 

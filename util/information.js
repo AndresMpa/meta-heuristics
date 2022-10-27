@@ -70,6 +70,76 @@ const geneticResults = (
   console.groupEnd('----------------Simulation result----------------');
 };
 
-const geneticInteration = (iterations) => {};
+const geneticInteration = (iterations) => {
+  // Objects to cast
+  function Status(factible, volume, cost) {
+    this.Factible = factible;
+    this.Volume = volume;
+    this.Cost = cost;
+  }
+
+  function Summary(factibles, volumes, costs) {
+    this.totalFactible = factibles.reduce((prev, curr) => {
+      return (prev += curr ? 1 : 0);
+    }, 0);
+
+    this.totalUnfactible = factibles.reduce((prev, curr) => {
+      return (prev += !curr ? 1 : 0);
+    }, 0);
+
+    this.totalVolume = volumes.reduce((prev, curr) => {
+      return (prev += curr);
+    }, 0);
+
+    this.totalCost = costs.reduce((prev, curr) => {
+      return (prev += curr);
+    }, 0);
+  }
+
+  const generation = iterations.length - 1;
+  const current = iterations[generation][1];
+  let status = {};
+
+  console.group(
+    `----------------Iteration ${generation} status----------------\n`
+  );
+  current['schema'][generation].forEach((_, single) => {
+    console.group(
+      `\n----------------Single ${single} status----------------\n`
+    );
+    console.log('Chromosomes: \n');
+    console.log(current['schema'][generation][single]);
+
+    status.Status = new Status(
+      current['factible'][single],
+      current['volume'][single],
+      current['cost'][single]
+    );
+
+    console.table(status);
+    console.groupEnd(
+      `\n----------------Single ${single} status----------------\n`
+    );
+  });
+  console.groupEnd(
+    `----------------Iteration ${generation} status----------------\n`
+  );
+
+  status.Status = new Summary(
+    current['factible'],
+    current['volume'],
+    current['cost']
+  );
+
+  console.group(
+    `\n---------------------------Iteration ${generation} summary---------------------------\n`
+  );
+
+  console.table(status);
+
+  console.groupEnd(
+    `\n---------------------------Iteration ${generation} summary---------------------------\n`
+  );
+};
 
 export { pathResults, geneticResults, geneticInteration };

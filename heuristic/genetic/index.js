@@ -14,9 +14,13 @@ const geneticSimulation = (simulation, iterations, epoch, options) => {
 
   const genotype = getInitialPopulation(simulation, options);
 
+  iterations.push([genotype, simulation])
+  
+  geneticInteration(iterations);
+
   while (running(iterations.length)) {
     if (getProcessData().LOGGER === '1') {
-      geneticInteration(interations);
+      geneticInteration(iterations);
     }
   }
 
