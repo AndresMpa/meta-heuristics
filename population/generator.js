@@ -3,7 +3,7 @@ import { getProcessData } from '../util/process.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
 // Population handler
-import { populate, fixSingle } from './handler.js';
+import {  populate, fixSingle, feasibility } from './handler.js';
 // Utilities
 import {
   random,
@@ -65,6 +65,15 @@ const updatePopulationData = (data, simulation, characteristic) => {
   });
 };
 
+const updateFeasibility = (data, simulation) => {
+  simulation['factible'] = simulation['schema'][0].map((single) => {
+    return feasibility(
+      simulation['limitVolume'],
+      dotProduct(data['volume'], single)
+    );
+  });
+};
+
 const getInitialPopulation = (
   simulation,
   options,
@@ -78,6 +87,11 @@ const getInitialPopulation = (
   inbreedingHandler(data, simulation['schema'][0]);
   updatePopulationData(data, simulation, 'cost');
   updatePopulationData(data, simulation, 'volume');
+  updateFeasibility(data, simulation);
+
+  simulation['methods'].push('Initial');
+
+  console.log(simulation);
 
   return data;
 };

@@ -4,9 +4,6 @@ import { dotProduct, random } from './../util/helpers.js';
 const feasibility = (limit, value) => (limit - value > 0 ? true : false);
 
 const checkFeasibility = (infeasibleLimit, storage, data, dna) => {
-  console.log(storage['limitVolume'], dotProduct(dna, data['volume']));
-  console.log(feasibility(storage['limitVolume'], dotProduct(dna, data['volume'])));
-
   return (
     infeasibleLimit < getProcessData().INFEASIBLE_LIMIT &&
     feasibility(storage['limitVolume'], dotProduct(dna, data['volume']))
@@ -39,4 +36,4 @@ const fixSingle = (population, generation, single) => {
   );
 };
 
-export { populate, fixSingle };
+export { populate, fixSingle, feasibility };
