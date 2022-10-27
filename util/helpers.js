@@ -1,3 +1,5 @@
+import { getProcessData } from './process.js';
+
 /*
   Return a random number
 */
@@ -66,7 +68,7 @@ const updateVolume = (data, simulation) => {
     return current + counter;
   }, 0);
 
-  simulation['limitVolume'] = totalVolume / (2 * 4);
+  simulation['limitVolume'] = totalVolume * getProcessData().BACKPACK;
 };
 
 /*
@@ -95,10 +97,21 @@ const isZero = (array) => {
   return zero === 0 ? true : false;
 };
 
+/*
+  Calculate the dot product between values from data
+*/
+const dotProduct = (schema, data) => {
+  const total = schema.reduce((previous, current, index) => {
+    return (previous += current * data[index]);
+  });
+  return total;
+};
+
 export {
   round,
   random,
   isZero,
+  dotProduct,
   getIndexes,
   getGreatest,
   updateVolume,
