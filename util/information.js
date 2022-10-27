@@ -57,4 +57,19 @@ const pathResults = (simulation, result, iterations, time, epoch, options) => {
   console.groupEnd('----------------Simulation result----------------');
 };
 
-export { pathResults };
+const geneticResults = (
+  simulation,
+  result,
+  iterations,
+  time,
+  epoch,
+  options
+) => {
+  console.group('----------------Simulation results----------------');
+  console.log(result);
+  console.groupEnd('----------------Simulation result----------------');
+};
+
+const geneticInteration = (iterations) => {};
+
+export { pathResults, geneticResults, geneticInteration };

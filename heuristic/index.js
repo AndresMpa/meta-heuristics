@@ -15,6 +15,11 @@ const simulate = () => {
       break;
     }
     case 'genetic': {
+      if (getProcessData().SOLUTION_SIZE < 10) {
+        console.error(
+          'Solution size is too small to get significant results using genetic approach, try another heuristic'
+        );
+      }
       return geneticSimulation;
       break;
     }
