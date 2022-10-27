@@ -2,9 +2,12 @@
 import { getProcessData } from '../util/process.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
+// Population handler
+import {  populate, fixSingle, feasibility } from './handler.js';
 // Utilities
 import {
   random,
+  dotProduct,
   getIndexes,
   getGreatest,
   updateVolume,
@@ -31,21 +34,16 @@ const getDNA = (data, simulation, size) => {
   delete dna['genotype'];
 };
 
-const checkInbreeding = (simulation) => {
+const checkInbreeding = (population) => {
   let failures = [];
-  let newFailure;
-  simulation['schema'].forEach((genotype, index) => {
-    simulation['schema'].forEach((item, failIndex) => {
-      if (hammingDistance(genotype, item) < 4 && index !== failIndex) {
-        newFailure = failures.findIndex((item) => {
-          return item[0] === failIndex && item[1] === index;
-        });
-        if (newFailure === -1) {
-          failures.push([index, failIndex]);
-        }
-      }
-    });
-  });
+  let index;
+
+  for (index = 0; index < population.length - 2; index++) {
+    if (hammingDistance(population[index], population[index + 1]) < 4) {
+      failures.push[(index, index + 1)];
+    }
+  }
+
   return failures;
 };
 
@@ -54,10 +52,26 @@ const inbreedingHandler = (data, simulation) => {
 
   while (inbred.length > 0) {
     inbred.forEach((failures) => {
-      //console.log(failures[0], failures[1]);
+      fixSingle(failures[0]);
+      fixSingle(failures[1]);
     });
     inbred = checkInbreeding(simulation);
   }
+};
+
+const updatePopulationData = (data, simulation, characteristic) => {
+  simulation[characteristic] = simulation['schema'][0].map((single) => {
+    return dotProduct(data[characteristic], single);
+  });
+};
+
+const updateFeasibility = (data, simulation) => {
+  simulation['factible'] = simulation['schema'][0].map((single) => {
+    return feasibility(
+      simulation['limitVolume'],
+      dotProduct(data['volume'], single)
+    );
+  });
 };
 
 const getInitialPopulation = (
@@ -69,13 +83,17 @@ const getInitialPopulation = (
 
   getDNA(data, simulation, size);
   updateVolume(data, simulation);
+  populate(data, simulation);
+  inbreedingHandler(data, simulation['schema'][0]);
+  updatePopulationData(data, simulation, 'cost');
+  updatePopulationData(data, simulation, 'volume');
+  updateFeasibility(data, simulation);
+
+  simulation['methods'].push('Initial');
 
   console.log(simulation);
 
-  //inbreedingHandler(data, simulation);
-
-  const population = [];
-  return population;
+  return data;
 };
 
 export { getInitialPopulation };

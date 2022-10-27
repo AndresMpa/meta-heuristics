@@ -53,13 +53,10 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
     }
   }
 
-  if (getProcessData().LOGGER === '1') {
-    console.log('\n---------------Simulation terminated--------------\n');
-  }
-
   const timeEnd = performance.now();
 
   if (getProcessData().LOGGER === '1') {
+    console.log('\n---------------Simulation terminated--------------\n');
     pathResults(
       simulation,
       iterations[iterations.length - 2],
