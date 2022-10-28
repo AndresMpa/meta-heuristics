@@ -1,27 +1,31 @@
-import { getProcessData } from '../util/process.js'
+import { getProcessData } from '../util/process.js';
 
-const handleGeneratedPopulation = (data, simulation, indexes) => {
+const handleGeneratedPopulation = (simulation, indexes) => {
   let maxCost = Math.max(...simulation['cost']);
   let index = simulation['cost'].indexOf(maxCost);
 
-  if (simulation['factible'][index]) {
+  if (simulation['factible'][index] && indexes.indexOf(index) === -1) {
     indexes.push(index);
   }
-  simulation['cost'].splice(index, 1);
+  simulation['cost'][index] = 0;
 
   if (indexes.length > getProcessData().RELEVANT) {
     return indexes;
   }
 
-  return handleGeneratedPopulation(data, simulation, indexes);
+  return handleGeneratedPopulation(simulation, indexes);
 };
 
-const updateGreatest = (greatest, simulation) => {
-  //console.log(greatest);
-  //console.log(simulation);
-    greatest.forEach((individual) => {
-        //simulation[]
-    })
+const getGreatestIndividuals = (greatest, simulation) => {
+  const best = greatest.map((individual) => {
+    return {
+      factible: simulation['factible'][individual],
+      schema: simulation['schema'][simulation['schema'].length - 1][individual],
+      limitVolume: simulation['limitVolume'],
+      volume: simulation['volume'][individual],
+      cost: simulation['cost'][individual],
+    };
+  });
 };
 
-export { handleGeneratedPopulation, updateGreatest };
+export { handleGeneratedPopulation, getGreatestIndividuals };

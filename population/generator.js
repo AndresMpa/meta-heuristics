@@ -2,9 +2,13 @@
 import { getProcessData } from '../util/process.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
-// Population handler
+// Population handlers
 import { populate, fixSingle, feasibility } from './handler.js';
-import { handleGeneratedPopulation, updateGreatest } from './postGenerator.js';
+// Post generation handlers
+import {
+  handleGeneratedPopulation,
+  getGreatestIndividuals,
+} from './postGenerator.js';
 // Utilities
 import {
   random,
@@ -80,17 +84,12 @@ const getInitialPopulation = (
   updatePopulationData(data, simulation, 'volume');
   updatePopulationData(data, simulation, 'cost');
 
-  let greatest = handleGeneratedPopulation(
-    data,
-    structuredClone(simulation),
-    []
-  );
-
-  updateGreatest(greatest, simulation);
+  let greatest = handleGeneratedPopulation(structuredClone(simulation), []);
+  getGreatestIndividuals(greatest, simulation);
 
   simulation['methods'].push('Initial');
 
-  return data;
+  return [data, greatest];
 };
 
 export { getInitialPopulation };
