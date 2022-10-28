@@ -104,22 +104,22 @@ const geneticInteration = (iterations) => {
   console.group(
     `----------------Iteration ${generation} status----------------\n`
   );
-  current['schema'][generation].forEach((_, single) => {
+  current['schema'][generation].forEach((_, individual) => {
     console.group(
-      `\n----------------Single ${single + 1} status----------------\n`
+      `\n----------------Single ${individual + 1} status----------------\n`
     );
     console.log('Chromosomes: \n');
-    console.log(current['schema'][generation][single]);
+    console.log(current['schema'][generation][individual]);
 
     status.Status = new Status(
-      current['factible'][single],
-      current['volume'][single],
-      current['cost'][single]
+      current['factible'][individual],
+      current['volume'][individual],
+      current['cost'][individual]
     );
 
     console.table(status);
     console.groupEnd(
-      `\n----------------Single ${single + 1} status----------------\n`
+      `\n----------------Single ${individual + 1} status----------------\n`
     );
   });
   console.groupEnd(

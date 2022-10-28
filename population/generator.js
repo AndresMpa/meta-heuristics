@@ -62,8 +62,8 @@ const inbreedingHandler = (data, population, feasible) => {
 };
 
 const updatePopulationData = (data, simulation, characteristic) => {
-  simulation[characteristic] = simulation['schema'][0].map((single) => {
-    return dotProduct(data[characteristic], single);
+  simulation[characteristic] = simulation['schema'][0].map((individual) => {
+    return dotProduct(data[characteristic], individual);
   });
 };
 

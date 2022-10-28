@@ -17,7 +17,7 @@ const handleGeneratedPopulation = (data, simulation, indexes) => {
 const updateGreatest = (greatest, simulation) => {
   //console.log(greatest);
   //console.log(simulation);
-    greatest.forEach((single) => {
+    greatest.forEach((individual) => {
         //simulation[]
     })
 };
