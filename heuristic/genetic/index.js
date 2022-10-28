@@ -9,20 +9,20 @@ import { makeFile } from '../../dataHandlers/fileHandler.js';
 const running = (current) =>
   getProcessData().ITERATION_LIMIT < current ? true : false;
 
-const geneticSimulation = (simulation, iterations, epoch, options) => {
+const geneticSimulation = (population, generations, epoch, options) => {
   const timeStart = performance.now();
 
-  const genotype = getInitialPopulation(simulation);
+  const populationData = getInitialPopulation(population);
 
-  iterations.push([genotype, simulation]);
-  
+  generations.push([populationData[0], population, populationData[1]]);
+
   if (getProcessData().LOGGER === '1') {
-    geneticInteration(iterations);
+    geneticInteration(generations);
   }
 
-  while (running(iterations.length)) {
+  while (running(generations.length)) {
     if (getProcessData().LOGGER === '1') {
-      geneticInteration(iterations);
+      geneticInteration(generations);
     }
   }
 
@@ -31,9 +31,9 @@ const geneticSimulation = (simulation, iterations, epoch, options) => {
   if (getProcessData().LOGGER === '1') {
     console.log('\n---------------Simulation terminated--------------\n');
     geneticResults(
-      simulation,
-      iterations[iterations.length - 2],
-      iterations.length,
+      population,
+      generations[generations.length - 2],
+      generations.length,
       timeEnd - timeStart,
       epoch,
       options
@@ -42,7 +42,7 @@ const geneticSimulation = (simulation, iterations, epoch, options) => {
 
   if (options.keep) {
     makeFile(
-      JSON.stringify(iterations),
+      JSON.stringify(generations),
       epoch,
       options.id,
       'json',
