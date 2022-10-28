@@ -5,10 +5,7 @@ import { getSample } from '../dataHandlers/store.js';
 // Population handlers
 import { populate, fixSingle } from './handler.js';
 // Post generation handlers
-import {
-  getGreatestIndividuals,
-  identifyGreatestIndividuals,
-} from './postGenerator.js';
+import { getGreatestIndividuals } from './postGenerator.js';
 // Utilities
 import {
   dotProduct,
@@ -80,8 +77,7 @@ const getInitialPopulation = (
   inbreedingHandler(data, simulation['schema'][0], simulation['factible']);
   updatePopulationData(data, simulation, 'volume');
   updatePopulationData(data, simulation, 'cost');
-  let greatest = identifyGreatestIndividuals(structuredClone(simulation), []);
-  getGreatestIndividuals(greatest, simulation);
+  let greatest = getGreatestIndividuals(data, simulation);
 
   simulation['methods'].push('Initial');
 
