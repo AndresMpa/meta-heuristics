@@ -3,18 +3,15 @@ import { getProcessData } from '../util/process.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
 // Population handlers
-import { populate, fixSingle, feasibility } from './handler.js';
+import { populate, fixSingle } from './handler.js';
 // Post generation handlers
 import {
-  handleGeneratedPopulation,
   getGreatestIndividuals,
+  identifyGreatestIndividuals,
 } from './postGenerator.js';
 // Utilities
 import {
-  random,
   dotProduct,
-  getIndexes,
-  getGreatest,
   updateVolume,
   fillUpToZero,
   hammingDistance,
@@ -83,8 +80,7 @@ const getInitialPopulation = (
   inbreedingHandler(data, simulation['schema'][0], simulation['factible']);
   updatePopulationData(data, simulation, 'volume');
   updatePopulationData(data, simulation, 'cost');
-
-  let greatest = handleGeneratedPopulation(structuredClone(simulation), []);
+  let greatest = identifyGreatestIndividuals(structuredClone(simulation), []);
   getGreatestIndividuals(greatest, simulation);
 
   simulation['methods'].push('Initial');
