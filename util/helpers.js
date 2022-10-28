@@ -75,14 +75,15 @@ const updateVolume = (data, simulation) => {
   Hamming distance between 2 arrays, then return
   distance as a number
 */
-const hammingDistance = (data, compare) => {
-  let distance = 0;
+const hammingDistance = (data, compare, getPosition = false) => {
+  let distance = [0, []];
   compare.forEach((value, index) => {
     if (data[index] !== value) {
-      distance += 1;
+      distance[0] += 1;
+      distance[1].push(index);
     }
   });
-  return distance;
+  return getPosition ? distance : distance[0];
 };
 
 /*

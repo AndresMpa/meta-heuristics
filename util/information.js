@@ -87,14 +87,14 @@ const geneticInteration = (iterations) => {
       return array.reduce((prev, curr) => (prev += curr), 0);
     }
 
-    this.totalUnfactible = factibleCounter(factibles);
-    this.totalFactible = Math.abs(
+    this.totalUnfeasible = factibleCounter(factibles);
+    this.totalFeasible = Math.abs(
       factibles.length - factibleCounter(factibles)
     );
 
     this.totalVolume = countTotal(volumes);
     this.totalCost = countTotal(costs);
-    this.populationMean = this.totalCost / costs.length
+    this.populationMean = this.totalCost / costs.length;
   }
 
   const generation = iterations.length - 1;
@@ -122,6 +122,7 @@ const geneticInteration = (iterations) => {
       `\n----------------Single ${individual + 1} status----------------\n`
     );
   });
+
   console.groupEnd(
     `----------------Iteration ${generation} status----------------\n`
   );
@@ -141,6 +142,9 @@ const geneticInteration = (iterations) => {
   console.groupEnd(
     `\n---------------------------Iteration ${generation} summary---------------------------\n`
   );
+
+  // Best individuals
+  //console.log(iterations[iterations.length - 1][2]);
 };
 
 export { pathResults, geneticResults, geneticInteration };
