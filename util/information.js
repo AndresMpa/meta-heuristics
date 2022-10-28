@@ -79,21 +79,22 @@ const geneticInteration = (iterations) => {
   }
 
   function Summary(factibles, volumes, costs) {
-    this.totalFactible = factibles.reduce((prev, curr) => {
-      return (prev += curr ? 1 : 0);
-    }, 0);
+    function factibleCounter(array) {
+      return array.reduce((prev, curr) => (prev += !curr ? 1 : 0), 0);
+    }
 
-    this.totalUnfactible = factibles.reduce((prev, curr) => {
-      return (prev += !curr ? 1 : 0);
-    }, 0);
+    function countTotal(array) {
+      return array.reduce((prev, curr) => (prev += curr), 0);
+    }
 
-    this.totalVolume = volumes.reduce((prev, curr) => {
-      return (prev += curr);
-    }, 0);
+    this.totalUnfactible = factibleCounter(factibles);
+    this.totalFactible = Math.abs(
+      factibles.length - factibleCounter(factibles)
+    );
 
-    this.totalCost = costs.reduce((prev, curr) => {
-      return (prev += curr);
-    }, 0);
+    this.totalVolume = countTotal(volumes);
+    this.totalCost = countTotal(costs);
+    this.populationMean = this.totalCost / costs.length
   }
 
   const generation = iterations.length - 1;
@@ -105,7 +106,7 @@ const geneticInteration = (iterations) => {
   );
   current['schema'][generation].forEach((_, single) => {
     console.group(
-      `\n----------------Single ${single} status----------------\n`
+      `\n----------------Single ${single + 1} status----------------\n`
     );
     console.log('Chromosomes: \n');
     console.log(current['schema'][generation][single]);
@@ -118,7 +119,7 @@ const geneticInteration = (iterations) => {
 
     console.table(status);
     console.groupEnd(
-      `\n----------------Single ${single} status----------------\n`
+      `\n----------------Single ${single + 1} status----------------\n`
     );
   });
   console.groupEnd(
