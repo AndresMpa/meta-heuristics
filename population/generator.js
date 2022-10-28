@@ -3,8 +3,8 @@ import { getProcessData } from '../util/process.js';
 // Data handlers
 import { getSample } from '../dataHandlers/store.js';
 // Population handler
-import {  populate, fixSingle, feasibility } from './handler.js';
-import { handleGeneratedPopulation } from './postGenerator.js'
+import { populate, fixSingle, feasibility } from './handler.js';
+import { handleGeneratedPopulation, updateGreatest } from './postGenerator.js';
 // Utilities
 import {
   random,
@@ -48,30 +48,22 @@ const checkInbreeding = (population) => {
   return failures;
 };
 
-const inbreedingHandler = (data, simulation) => {
-  let inbred = checkInbreeding(simulation);
+const inbreedingHandler = (data, population, feasible) => {
+  let inbred = checkInbreeding(population, feasible);
 
   while (inbred.length > 0) {
     inbred.forEach((failures) => {
-      fixSingle(failures[0]);
-      fixSingle(failures[1]);
+      failures.forEach((item) => {
+        fixSingle(population, population.length - 1, item, feasible[item]);
+      });
     });
-    inbred = checkInbreeding(simulation);
+    inbred = checkInbreeding(population);
   }
 };
 
 const updatePopulationData = (data, simulation, characteristic) => {
   simulation[characteristic] = simulation['schema'][0].map((single) => {
     return dotProduct(data[characteristic], single);
-  });
-};
-
-const updateFeasibility = (data, simulation) => {
-  simulation['factible'] = simulation['schema'][0].map((single) => {
-    return feasibility(
-      simulation['limitVolume'],
-      dotProduct(data['volume'], single)
-    );
   });
 };
 
@@ -84,12 +76,17 @@ const getInitialPopulation = (
   getDNA(data, simulation, size);
   updateVolume(data, simulation);
   populate(data, simulation);
-  inbreedingHandler(data, simulation['schema'][0]);
-  updatePopulationData(data, simulation, 'cost');
+  inbreedingHandler(data, simulation['schema'][0], simulation['factible']);
   updatePopulationData(data, simulation, 'volume');
-  updateFeasibility(data, simulation);
+  updatePopulationData(data, simulation, 'cost');
 
-  handleGeneratedPopulation(data, simulation)
+  let greatest = handleGeneratedPopulation(
+    data,
+    structuredClone(simulation),
+    []
+  );
+
+  updateGreatest(greatest, simulation);
 
   simulation['methods'].push('Initial');
 
