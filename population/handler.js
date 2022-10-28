@@ -18,22 +18,47 @@ const genChromosomes = (dna) => {
 
 const populate = (data, storage) => {
   let infeasibleLimit = 0;
+  storage['factible'] = [];
   storage['schema'].forEach((single, singleIndex) => {
     single.forEach((dna, dnaIndex) => {
       dna = genChromosomes(dna);
-      while (checkFeasibility(infeasibleLimit, storage, data, dna)) {
-        dna = genChromosomes(dna);
+      if (infeasibleLimit < getProcessData().INFEASIBLE_LIMIT) {
+        while (checkFeasibility(infeasibleLimit, storage, data, dna)) {
+          dna = genChromosomes(dna);
+        }
+      } else {
+        while (
+          !feasibility(storage['limitVolume'], dotProduct(dna, data['volume']))
+        ) {
+          dna = genChromosomes(dna);
+        }
       }
+
+      storage['factible'].push(
+        feasibility(storage['limitVolume'], dotProduct(dna, data['volume']))
+      );
       storage['schema'][singleIndex][dnaIndex] = dna;
       infeasibleLimit++;
     });
   });
 };
 
-const fixSingle = (population, generation, single) => {
-  population['schema'][generation][single] = genChromosomes(
-    population['schema'][generation][single]
-  );
+const fixSingle = (population, generation, single, feasible) => {
+  let dna;
+  if (feasible) {
+    while (
+      !feasibility(storage['limitVolume'], dotProduct(dna, data['volume']))
+    ) {
+      dna = genChromosomes(population['schema'][generation][single]);
+    }
+  } else {
+    while (
+      feasibility(storage['limitVolume'], dotProduct(dna, data['volume']))
+    ) {
+      dna = genChromosomes(population['schema'][generation][single]);
+    }
+  }
+  population['schema'][generation][single] = dna;
 };
 
 export { populate, fixSingle, feasibility };
