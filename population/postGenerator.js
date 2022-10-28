@@ -1,3 +1,5 @@
+import { getProcessData } from '../util/process.js'
+
 const handleGeneratedPopulation = (data, simulation, indexes) => {
   let maxCost = Math.max(...simulation['cost']);
   let index = simulation['cost'].indexOf(maxCost);
@@ -7,7 +9,7 @@ const handleGeneratedPopulation = (data, simulation, indexes) => {
   }
   simulation['cost'].splice(index, 1);
 
-  if (indexes.length > 2) {
+  if (indexes.length > getProcessData().RELEVANT) {
     return indexes;
   }
 
