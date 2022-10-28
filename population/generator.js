@@ -4,6 +4,7 @@ import { getProcessData } from '../util/process.js';
 import { getSample } from '../dataHandlers/store.js';
 // Population handler
 import {  populate, fixSingle, feasibility } from './handler.js';
+import { handleGeneratedPopulation } from './postGenerator.js'
 // Utilities
 import {
   random,
@@ -76,7 +77,6 @@ const updateFeasibility = (data, simulation) => {
 
 const getInitialPopulation = (
   simulation,
-  options,
   size = getProcessData().SOLUTION_SIZE
 ) => {
   const data = getSample();
@@ -88,6 +88,8 @@ const getInitialPopulation = (
   updatePopulationData(data, simulation, 'cost');
   updatePopulationData(data, simulation, 'volume');
   updateFeasibility(data, simulation);
+
+  handleGeneratedPopulation(data, simulation)
 
   simulation['methods'].push('Initial');
 

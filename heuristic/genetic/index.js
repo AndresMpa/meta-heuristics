@@ -12,11 +12,13 @@ const running = (current) =>
 const geneticSimulation = (simulation, iterations, epoch, options) => {
   const timeStart = performance.now();
 
-  const genotype = getInitialPopulation(simulation, options);
+  const genotype = getInitialPopulation(simulation);
 
-  iterations.push([genotype, simulation])
+  iterations.push([genotype, simulation]);
   
-  geneticInteration(iterations);
+  if (getProcessData().LOGGER === '1') {
+    geneticInteration(iterations);
+  }
 
   while (running(iterations.length)) {
     if (getProcessData().LOGGER === '1') {
