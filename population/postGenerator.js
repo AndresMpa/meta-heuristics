@@ -17,35 +17,52 @@ const identifyGreatestIndividuals = (simulation, indexes) => {
   return identifyGreatestIndividuals(simulation, indexes);
 };
 
-const identifySchema = (data, individuals, greatest) => {
-  const bestIndividuals = greatest.map((item) => {
-    return individuals[item];
-  });
-
-  const values = new Set(data['cost']);
+const getPhenotypeMean = (data) => {
+  const alleles = new Set(data['cost']);
   let mean = 0;
-  values.forEach((item) => {
-    mean += item;
+
+  alleles.forEach((item) => (mean += item));
+
+  mean /= alleles.size;
+
+  return mean;
+};
+
+const identifySchema = (data, individuals, greatest) => {
+  const bestIndividuals = greatest.map((item) => individuals[item]);
+  const mean = getPhenotypeMean(data);
+  const chromosomes = [];
+  let row, column;
+  let pivot = [];
+
+  bestIndividuals.forEach((item) => {
+    console.log(...item);
   });
 
-  mean /= values.size;
+  for (column = 0; column < bestIndividuals[0].length; column++) {
+    row = 0;
 
-  console.log(mean);
-  console.log(...data['cost']);
-  console.log();
+    if (
+      bestIndividuals[row][column] === bestIndividuals[row + 1][column] &&
+      bestIndividuals[row][column] === 1
+    ) {
+      for (row = 0; row < bestIndividuals.length; row++) {
+        pivot.push(bestIndividuals[row][column]);
+      }
 
-  console.log(Math.max(...data['cost']));
-  console.log(Math.min(...data['cost']));
-
-  let schema = [];
-  let index;
-
-  for (index = 0; index < bestIndividuals.length; index++) {
-    console.log(...bestIndividuals[index]);
+      if (
+        pivot.every((chromosome) => chromosome === pivot[0]) &&
+        data['cost'][column] > mean
+      ) {
+        chromosomes.push(pivot, column);
+      }
+      pivot = [];
+      row++;
+    }
   }
-  console.log(schema);
+  console.log(chromosomes);
 
-  return schema;
+  return chromosomes;
 };
 
 const getOrder = (schema) => {
