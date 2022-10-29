@@ -68,7 +68,7 @@ const updateVolume = (data, simulation) => {
     return current + counter;
   }, 0);
 
-  simulation['limitVolume'] = totalVolume * getProcessData().BACKPACK;
+  simulation['limitVolume'] = round(totalVolume * getProcessData().BACKPACK);
 };
 
 /*
@@ -104,33 +104,25 @@ const isZero = (array) => {
 const dotProduct = (schema, data) => {
   const total = schema.reduce((previous, current, index) => {
     return (previous += current * data[index]);
-  });
+  }, 0);
   return total;
 };
 
 /*
-  Return mean of a data set, without taking repeated numbers
+  Return mean of an array of numbers
 */
-const getMeanAsSet = (data, target) => {
-  const values = new Set(data[target]);
-  let mean = 0;
-
-  values.forEach((item) => (mean += item));
-
-  mean /= values.size;
-
-  return mean;
-};
+const getMean = (data) =>
+  data.reduce((prev, curr) => (prev += curr), 0) / data.length;
 
 export {
   round,
   random,
   isZero,
+  getMean,
   dotProduct,
   getIndexes,
   getGreatest,
   updateVolume,
-  getMeanAsSet,
   fillUpToZero,
   getCurrentPath,
   hammingDistance,
