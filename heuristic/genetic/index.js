@@ -1,5 +1,6 @@
 // Schemes handlers
-import { getInitialPopulation } from '../../population/generator.js';
+import { getInitialPopulation } from '../../generators/population/generator.js';
+import { getGreatestIndividuals } from './population/greatest.js';
 // Utilities
 import { geneticResults, geneticInteration } from '../../util/information.js';
 import { getProcessData } from '../../util/process.js';
@@ -13,8 +14,12 @@ const geneticSimulation = (population, generations, epoch, options) => {
   const timeStart = performance.now();
 
   const populationData = getInitialPopulation(population);
+  const greatestIndividuals = getGreatestIndividuals(
+    populationData,
+    population
+  );
 
-  generations.push([populationData[0], population, populationData[1]]);
+  generations.push([populationData, population, greatestIndividuals]);
 
   if (getProcessData().LOGGER === '1') {
     geneticInteration(generations);
