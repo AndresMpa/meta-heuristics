@@ -108,6 +108,20 @@ const dotProduct = (schema, data) => {
   return total;
 };
 
+/*
+  Return mean of a data set, without taking repeated numbers
+*/
+const getMeanAsSet = (data, target) => {
+  const values = new Set(data[target]);
+  let mean = 0;
+
+  values.forEach((item) => (mean += item));
+
+  mean /= values.size;
+
+  return mean;
+};
+
 export {
   round,
   random,
@@ -116,6 +130,7 @@ export {
   getIndexes,
   getGreatest,
   updateVolume,
+  getMeanAsSet,
   fillUpToZero,
   getCurrentPath,
   hammingDistance,
