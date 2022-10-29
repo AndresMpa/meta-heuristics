@@ -66,7 +66,7 @@ const geneticResults = (
   options
 ) => {
   console.group('----------------Simulation results----------------');
-  console.log(result);
+  console.log('geneticResults');
   console.groupEnd('----------------Simulation result----------------');
 };
 
@@ -76,6 +76,12 @@ const geneticInteration = (iterations) => {
     this.Factible = factible;
     this.Volume = volume;
     this.Cost = cost;
+  }
+
+  function Best(order, length, fitness) {
+    this.Order = order;
+    this.length = length;
+    this.fitness = fitness;
   }
 
   function Summary(factibles, volumes, costs) {
@@ -99,6 +105,7 @@ const geneticInteration = (iterations) => {
 
   const generation = iterations.length - 1;
   const current = iterations[generation][1];
+  const schema = [];
   let status = {};
 
   console.group(
@@ -106,7 +113,7 @@ const geneticInteration = (iterations) => {
   );
   current['schema'][generation].forEach((_, individual) => {
     console.group(
-      `\n----------------Single ${individual + 1} status----------------\n`
+      `\n----------------Individual ${individual + 1} status----------------\n`
     );
     console.log('Chromosomes: \n');
     console.log(current['schema'][generation][individual]);
@@ -119,7 +126,7 @@ const geneticInteration = (iterations) => {
 
     console.table(status);
     console.groupEnd(
-      `\n----------------Single ${individual + 1} status----------------\n`
+      `\n----------------Individual ${individual + 1} status----------------\n`
     );
   });
 
@@ -133,18 +140,66 @@ const geneticInteration = (iterations) => {
     current['cost']
   );
 
+  // Summary
   console.group(
-    `\n---------------------------Iteration ${generation} summary---------------------------\n`
+    `\n-----------------------------------Iteration ${generation} summary-----------------------------------\n`
   );
-
   console.table(status);
-
   console.groupEnd(
-    `\n---------------------------Iteration ${generation} summary---------------------------\n`
+    `\n-----------------------------------Iteration ${generation} summary-----------------------------------\n`
   );
 
   // Best individuals
-  //console.log(iterations[iterations.length - 1][2]);
+  console.group(
+    `\n----------------Best individuals from generation ${generation}----------------\n`
+  );
+  iterations[generation][2].forEach((individual) => {
+    console.group(
+      `\n----------------Individual ${
+        individual['individual'] + 1
+      } status----------------\n`
+    );
+    console.log('Chromosomes: \n');
+    console.log(individual['schema']);
+    schema.push([individual['schema'], individual['individual']]);
+
+    status.Status = new Status(
+      individual['factible'],
+      individual['volume'],
+      individual['cost']
+    );
+    console.table(status);
+    status = {};
+
+    status.Best = new Best(
+      individual['order'],
+      individual['length'],
+      individual['fitness']
+    );
+    console.table(status);
+    status = {};
+
+    console.groupEnd(
+      `\n----------------Individual ${
+        individual['individual'] + 1
+      } status----------------\n`
+    );
+  });
+
+  console.group(
+    `\n----------------Best individuals genotype from generation ${generation}----------------\n`
+  );
+  schema.forEach((genotype) => {
+    console.log(`Individual ${genotype[1]} genotype`);
+    console.log(...genotype[0]);
+  });
+  console.groupEnd(
+    `\n----------------Best individuals genotype from generation ${generation}----------------\n`
+  );
+
+  console.groupEnd(
+    `\n----------------Best individuals from generation ${generation}----------------\n`
+  );
 };
 
 export { pathResults, geneticResults, geneticInteration };
