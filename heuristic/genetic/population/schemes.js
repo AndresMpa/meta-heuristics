@@ -1,31 +1,18 @@
-import { getMeanAsSet } from '../../../util/helpers.js';
+import { getMean } from '../../../util/helpers.js';
 
-const getOrder = (schema) => {
-  //console.log(order);
+const getOrder = (schema, genotype) => genotype.length - schema.length;
 
-  return 0;
-};
+const getLength = (schema) => schema[schema.length - 1][1] - schema[0][1];
 
-const getLength = (schema) => {
-  //console.log(schema);
-
-  return 0;
-};
-
-const getFitness = () => {
-  return 0;
-};
+const getFitness = (population, schema) =>
+  getMean(schema) / getMean(population);
 
 const identifySchema = (data, individuals, greatest) => {
   const bestIndividuals = greatest.map((item) => individuals[item]);
-  const mean = getMeanAsSet(data, 'cost');
+  const mean = getMean(Array.from(new Set(data['cost'])));
   const chromosomes = [];
   let row, column;
   let pivot = [];
-
-  bestIndividuals.forEach((item) => {
-    console.log(...item);
-  });
 
   for (column = 0; column < bestIndividuals[0].length; column++) {
     row = 0;
@@ -42,7 +29,7 @@ const identifySchema = (data, individuals, greatest) => {
         pivot.every((chromosome) => chromosome === pivot[0]) &&
         data['cost'][column] > mean
       ) {
-        chromosomes.push(pivot, column);
+        chromosomes.push([pivot, column]);
       }
       pivot = [];
       row++;

@@ -1,31 +1,34 @@
+import { identifySchema, getOrder, getLength, getFitness } from './schemes.js';
 import { getProcessData } from '../../../util/process.js';
+import { round } from '../../../util/helpers.js';
 
-const identifyGreatestIndividuals = (simulation, indexes) => {
-  let maxCost = Math.max(...simulation['cost']);
-  let index = simulation['cost'].indexOf(maxCost);
+const identifyGreatestIndividuals = (population, indexes) => {
+  let maxCost = Math.max(...population['cost']);
+  let index = population['cost'].indexOf(maxCost);
 
-  if (simulation['factible'][index] && indexes.indexOf(index) === -1) {
+  if (population['factible'][index] && indexes.indexOf(index) === -1) {
     indexes.push(index);
   }
-  simulation['cost'][index] = 0;
+  population['cost'][index] = 0;
 
   if (indexes.length > getProcessData().RELEVANT) {
     return indexes;
   }
 
-  return identifyGreatestIndividuals(simulation, indexes);
+  return identifyGreatestIndividuals(population, indexes);
 };
 
-const getGreatestIndividuals = (data, simulation) => {
-  const greatest = identifyGreatestIndividuals(structuredClone(simulation), []);
+const getGreatestIndividuals = (populationData, population) => {
+  const greatest = identifyGreatestIndividuals(structuredClone(population), []);
 
   const bestIndividuals = greatest.map((individual) => {
     return {
-      factible: simulation['factible'][individual],
-      schema: simulation['schema'][simulation['schema'].length - 1][individual],
-      limitVolume: simulation['limitVolume'],
-      volume: simulation['volume'][individual],
-      cost: simulation['cost'][individual],
+      factible: population['factible'][individual],
+      schema: population['schema'][population['schema'].length - 1][individual],
+      limitVolume: population['limitVolume'],
+      volume: population['volume'][individual],
+      cost: population['cost'][individual],
+      individual: individual,
     };
   });
 
@@ -33,25 +36,24 @@ const getGreatestIndividuals = (data, simulation) => {
 };
 
 const calculateGreatestCharacteristics = (
-  data,
-  simulation,
+  populationData,
+  population,
   bestIndividuals
 ) => {
-  const populationCostMean =
-    simulation['cost'].reduce((prev, curr) => (prev += curr)) /
-    simulation['cost'].length;
+  const greatest = identifyGreatestIndividuals(structuredClone(population), []);
+  const schemaCost = bestIndividuals.map((individual) => individual['cost']);
   const schema = identifySchema(
-    data,
-    simulation['schema'][simulation['schema'].length - 1],
+    populationData,
+    population['schema'][population['schema'].length - 1],
     greatest
   );
 
-  bestIndividuals.forEach((individual) => {
-    individual = {
-      ...individual,
-      order: getOrder(schema),
+  bestIndividuals.forEach((_, individual) => {
+    bestIndividuals[individual] = {
+      ...bestIndividuals[individual],
+      order: round(getOrder(schema, bestIndividuals[individual]['schema'])),
       length: getLength(schema),
-      fitness: getFitness(populationCostMean),
+      fitness: round(getFitness(population['cost'], schemaCost)),
     };
   });
 };
