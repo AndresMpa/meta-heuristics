@@ -1,6 +1,10 @@
 // Schemes handlers
 import { getInitialPopulation } from '../../generators/population/generator.js';
-import { getGreatestIndividuals } from './population/greatest.js';
+// Population utilities
+import {
+  getGreatestIndividuals,
+  calculateGreatestCharacteristics,
+} from './population/greatest.js';
 // Utilities
 import { geneticResults, geneticInteration } from '../../util/information.js';
 import { getProcessData } from '../../util/process.js';
@@ -18,6 +22,7 @@ const geneticSimulation = (population, generations, epoch, options) => {
     populationData,
     population
   );
+  calculateGreatestCharacteristics(populationData, population, greatestIndividuals);
 
   generations.push([populationData, population, greatestIndividuals]);
 
