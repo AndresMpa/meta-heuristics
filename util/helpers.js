@@ -114,10 +114,16 @@ const dotProduct = (schema, data) => {
 const getMean = (data) =>
   data.reduce((prev, curr) => (prev += curr), 0) / data.length;
 
+/*
+  Reduce array dimension
+*/
+const flatter = (array) => array.flat(array.length);
+
 export {
   round,
   random,
   isZero,
+  flatter,
   getMean,
   dotProduct,
   getIndexes,

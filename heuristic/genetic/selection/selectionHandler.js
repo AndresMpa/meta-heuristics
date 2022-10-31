@@ -45,6 +45,7 @@ const roulette = (population, target) => {
     pivot.push(
       offspring.find((individual) => rouletteBall - individual[0] < 0)
     );
+    offspring.slice(pivot[pivot.length - 1], 1);
   }
 
   return pivot.map((item, index) => item[1]);

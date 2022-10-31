@@ -60,7 +60,7 @@ const geneticSimulation = (population, generations, epoch, options) => {
         P -> Create a new population
         O -> New population
     */
-    recombinateGenotypes(populationData, population, selectedIndividuals);
+    recombinateGenotypes(populationData, population, greatestIndividuals, selectedIndividuals);
 
     /*
       Mutation
