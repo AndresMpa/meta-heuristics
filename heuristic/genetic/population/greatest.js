@@ -41,6 +41,15 @@ const getGreatestIndividuals = (populationData, population) => {
   return bestIndividuals;
 };
 
+const schemaSimplifier = (schema) => {
+  let simplifiedSchema = [schema[0][1], schema[schema.length - 1][1]];
+  if (simplifiedSchema[0] === simplifiedSchema[simplifiedSchema.length - 1]) {
+    simplifiedSchema.pop();
+  }
+
+  return simplifiedSchema;
+};
+
 const calculateGreatestCharacteristics = (
   populationData,
   population,
@@ -53,19 +62,16 @@ const calculateGreatestCharacteristics = (
     population['schema'][population['schema'].length - 1],
     greatest
   );
-  let schemaLength;
 
   schema = purifySchema(populationData, schema);
-
-  schemaLength = getLength(schema);
 
   bestIndividuals.forEach((_, individual) => {
     bestIndividuals[individual] = {
       ...bestIndividuals[individual],
       order: round(getOrder(schema, bestIndividuals[individual]['schema'])),
-      length: schemaLength,
+      length: getLength(schema),
       fitness: round(getFitness(population['cost'], schemaCost)),
-      schemaDefinition: schema,
+      schemaDefinition: schemaSimplifier(schema),
     };
   });
 };
