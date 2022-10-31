@@ -1,6 +1,12 @@
-import { identifySchema, getOrder, getLength, getFitness } from './schemes.js';
 import { getProcessData } from '../../../util/process.js';
 import { round } from '../../../util/helpers.js';
+import {
+  getOrder,
+  getLength,
+  getFitness,
+  purifySchema,
+  identifySchema,
+} from './schemes.js';
 
 const identifyGreatestIndividuals = (population, indexes) => {
   let maxCost = Math.max(...population['cost']);
@@ -42,18 +48,24 @@ const calculateGreatestCharacteristics = (
 ) => {
   const greatest = identifyGreatestIndividuals(structuredClone(population), []);
   const schemaCost = bestIndividuals.map((individual) => individual['cost']);
-  const schema = identifySchema(
+  let schema = identifySchema(
     populationData,
     population['schema'][population['schema'].length - 1],
     greatest
   );
+  let schemaLength;
+
+  schema = purifySchema(populationData, schema);
+
+  schemaLength = getLength(schema);
 
   bestIndividuals.forEach((_, individual) => {
     bestIndividuals[individual] = {
       ...bestIndividuals[individual],
       order: round(getOrder(schema, bestIndividuals[individual]['schema'])),
-      length: getLength(schema),
+      length: schemaLength,
       fitness: round(getFitness(population['cost'], schemaCost)),
+      schemaDefinition: schema,
     };
   });
 };
