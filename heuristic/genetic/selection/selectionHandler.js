@@ -11,7 +11,11 @@ const ranking = (population, target) => {
     offspring.push([individual / targetSum, index])
   );
 
-  offspring.sort((prev, curr) => curr[0] - prev[0]);
+  if (target === 'volume') {
+    offspring.sort((prev, curr) => prev[0] - curr[0]);
+  } else {
+    offspring.sort((prev, curr) => curr[0] - prev[0]);
+  }
 
   offspring = offspring.slice(0, getProcessData().OFFSPRING);
 
