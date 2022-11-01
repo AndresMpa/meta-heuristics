@@ -28,6 +28,8 @@ const geneticSimulation = (population, generations, epoch, options) => {
       P -> Create a population
       O -> Initial population
   */
+  let deceased = [];
+  let selectedIndividuals;
   const populationData = getInitialPopulation(population);
   let greatestIndividuals = getGreatestIndividuals(populationData, population);
   calculateGreatestCharacteristics(
@@ -36,13 +38,12 @@ const geneticSimulation = (population, generations, epoch, options) => {
     greatestIndividuals
   );
 
-  generations.push([populationData, population, greatestIndividuals]);
+  generations.push([populationData, population, greatestIndividuals, deceased]);
 
   if (getProcessData().LOGGER === '1') {
     geneticInteration(generations);
   }
 
-  let selectedIndividuals;
   while (running(generations.length)) {
     /*
       Selection
@@ -60,7 +61,12 @@ const geneticSimulation = (population, generations, epoch, options) => {
         P -> Create a new population
         O -> New population
     */
-    recombinateGenotypes(populationData, population, greatestIndividuals, selectedIndividuals);
+    deceased = recombinateGenotypes(
+      populationData,
+      population,
+      greatestIndividuals,
+      selectedIndividuals
+    );
 
     /*
       Mutation
@@ -73,7 +79,12 @@ const geneticSimulation = (population, generations, epoch, options) => {
 
     // Update generations
     greatestIndividuals = getGreatestIndividuals(populationData, population);
-    generations.push([populationData, population, greatestIndividuals]);
+    generations.push([
+      populationData,
+      population,
+      greatestIndividuals,
+      deceased,
+    ]);
 
     if (getProcessData().LOGGER === '1') {
       geneticInteration(generations);

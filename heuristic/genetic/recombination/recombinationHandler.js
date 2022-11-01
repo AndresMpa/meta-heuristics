@@ -97,10 +97,17 @@ const combine = (couple, reference, best) => {
 };
 
 const insertOffspring = (populationData, population, offspring) => {
+  let deceased = [];
   let index;
 
   offspring.forEach((individual) => {
     index = random(0, population['factible'].length);
+    deceased.push({
+      Feasibility: population['factible'][index],
+      Schema: population['schema'][0][index],
+      Volume: population['volume'][index],
+      Cost: population['cost'][index],
+    });
 
     population['factible'][index] = feasibility(
       population['limitVolume'],
@@ -113,6 +120,8 @@ const insertOffspring = (populationData, population, offspring) => {
     );
     population['cost'][index] = dotProduct(individual, populationData['cost']);
   });
+
+  return deceased;
 };
 
 /*
@@ -146,6 +155,6 @@ const recombinateGenotypes = (
 
   offspring = flatter(offspring);
 
-  insertOffspring(populationData, population, offspring);
+  return insertOffspring(populationData, population, offspring);
 };
 export { recombinateGenotypes };
