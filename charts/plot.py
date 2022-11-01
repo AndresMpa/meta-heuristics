@@ -97,7 +97,7 @@ def genetic(files, method):
     plt.legend(loc="upper left")
 
     # To save figure as a picture
-    plt.savefig("./plots/{} {}.png".format(datetime.now(), method))
+    plt.savefig("./plots/{} {} {}.png".format(datetime.now(), method, "scatter"))
     plt.close()
 
 

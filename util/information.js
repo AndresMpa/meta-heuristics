@@ -1,4 +1,5 @@
 import { getProcessData } from './process.js';
+import { getMean } from './helpers.js';
 
 /*
   A simple utility to show information under an structure
@@ -66,7 +67,7 @@ const geneticResults = (simulation, iterations, time, epoch, options) => {
   console.log(`Population got a volume schema of:`);
   console.log(...simulation.volume);
   console.log(`Simulation calculate a limit volume of:`);
-  console.log(simulation.limitVolume)
+  console.log(simulation.limitVolume);
   console.log(`Simulation selected individuals for breeding using:`);
   console.log(simulation.methods);
   console.log('Last population got genotypes:');
@@ -85,6 +86,18 @@ const geneticResults = (simulation, iterations, time, epoch, options) => {
   console.log(
     `Simulation met epochs limit at ${epoch}/${getProcessData().EPOCHS}`
   );
+  console.log(`Fitness mean through generations:`);
+  console.log(
+    getMean(iterations.map((generation) => generation[2][0]['fitness']))
+  );
+  console.log(`Mutation probability:`);
+  console.log(
+    getProcessData().MUTATION_RATE /
+      (simulation['schema'][0].length * simulation['schema'][0][0].length)
+  );
+
+  console.log(`Mutation rate:`);
+  console.log(getProcessData().MUTATION_RATE * 1);
 
   if (options.keep) {
     console.log(
