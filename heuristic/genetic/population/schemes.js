@@ -21,7 +21,6 @@ const schemaCutter = (schema, position) => {
   }
 
   if (shortenedSchema.length === 0) {
-    console.log("There's no a near alleles");
     return [schema[random(0, schema.length)]];
   }
   shortenedSchema.push([shortenedSchema[shortenedSchema.length - 1][1], 0]);
@@ -64,8 +63,8 @@ const purifySchema = (populationData, schema) => {
 
 const identifySchema = (data, individuals, greatest) => {
   const bestIndividuals = greatest.map((item) => individuals[item]);
-  const mean = getMean(Array.from(new Set(data['cost'])));
   const chromosomes = [];
+  let mean = getMean(Array.from(new Set(data['cost'])));
   let row, column;
   let pivot = [];
 
@@ -88,6 +87,31 @@ const identifySchema = (data, individuals, greatest) => {
       }
       pivot = [];
       row++;
+    }
+  }
+
+  if (chromosomes.length === 0) {
+    mean = getMean(Array.from(new Set(data['volume'])));
+    for (column = 0; column < bestIndividuals[0].length; column++) {
+      row = 0;
+
+      if (
+        bestIndividuals[row][column] === bestIndividuals[row + 1][column] &&
+        bestIndividuals[row][column] === 0
+      ) {
+        for (row = 0; row < bestIndividuals.length; row++) {
+          pivot.push(bestIndividuals[row][column]);
+        }
+
+        if (
+          pivot.every((chromosome) => chromosome === pivot[0]) &&
+          data['volume'][column] < mean
+        ) {
+          chromosomes.push([pivot, column]);
+        }
+        pivot = [];
+        row++;
+      }
     }
   }
 
