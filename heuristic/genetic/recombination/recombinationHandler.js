@@ -45,7 +45,9 @@ const getCombinationPoints = (size, constrains) => {
   pivot.sort();
   generator = 0;
   pivot.forEach((position) => {
-    points.push([generator, position]);
+    if (position !== generator) {
+      points.push([generator, position]);
+    }
     generator = position;
   });
 
