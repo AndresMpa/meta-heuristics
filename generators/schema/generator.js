@@ -1,7 +1,5 @@
-// CLI options
-import { logsForBigScreens } from '../cli/handler.js';
 // Data handlers
-import { getSample } from '../dataHandlers/store.js';
+import { getSample } from '../../dataHandlers/store.js';
 // Utilities
 import {
   random,
@@ -9,7 +7,7 @@ import {
   getGreatest,
   updateVolume,
   fillUpToZero,
-} from '../util/helpers.js';
+} from '../../util/helpers.js';
 
 /*
   Generate schemes using a generic structure

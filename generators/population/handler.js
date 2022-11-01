@@ -1,5 +1,5 @@
-import { getProcessData } from './../util/process.js';
-import { dotProduct, random } from './../util/helpers.js';
+import { dotProduct, random } from '../../util/helpers.js';
+import { getProcessData } from '../../util/process.js';
 
 const feasibility = (limit, value) => (limit - value > 0 ? true : false);
 

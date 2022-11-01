@@ -1,5 +1,5 @@
 // Schemes handlers
-import { getInitialSchema } from '../../schema/generator.js';
+import { getInitialSchema } from '../../generators/schema/generator.js';
 import { generateNeighborhood } from './neighbour.js';
 // Utilities
 import { pathResults } from '../../util/information.js';

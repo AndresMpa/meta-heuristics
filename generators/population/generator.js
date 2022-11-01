@@ -1,20 +1,16 @@
 // Process context
-import { getProcessData } from '../util/process.js';
+import { getProcessData } from '../../util/process.js';
 // Data handlers
-import { getSample } from '../dataHandlers/store.js';
-// Population handler
-import { populate, fixSingle, feasibility } from './handler.js';
-import { handleGeneratedPopulation, updateGreatest } from './postGenerator.js';
+import { getSample } from '../../dataHandlers/store.js';
+// Population handlers
+import { populate, fixSingle } from './handler.js';
 // Utilities
 import {
-  random,
   dotProduct,
-  getIndexes,
-  getGreatest,
   updateVolume,
   fillUpToZero,
   hammingDistance,
-} from '../util/helpers.js';
+} from '../../util/helpers.js';
 
 // Get empty DNA string of chromosomes
 const getDNA = (data, simulation, size) => {
@@ -79,14 +75,6 @@ const getInitialPopulation = (
   inbreedingHandler(data, simulation['schema'][0], simulation['factible']);
   updatePopulationData(data, simulation, 'volume');
   updatePopulationData(data, simulation, 'cost');
-
-  let greatest = handleGeneratedPopulation(
-    data,
-    structuredClone(simulation),
-    []
-  );
-
-  updateGreatest(greatest, simulation);
 
   simulation['methods'].push('Initial');
 
