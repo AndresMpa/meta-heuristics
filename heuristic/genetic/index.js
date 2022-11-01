@@ -79,6 +79,12 @@ const geneticSimulation = (population, generations, epoch, options) => {
 
     // Update generations
     greatestIndividuals = getGreatestIndividuals(populationData, population);
+    calculateGreatestCharacteristics(
+      populationData,
+      population,
+      greatestIndividuals
+    );
+
     generations.push([
       populationData,
       population,
