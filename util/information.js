@@ -57,16 +57,43 @@ const pathResults = (simulation, result, iterations, time, epoch, options) => {
   console.groupEnd('----------------Simulation result----------------');
 };
 
-const geneticResults = (
-  simulation,
-  result,
-  iterations,
-  time,
-  epoch,
-  options
-) => {
+const geneticResults = (simulation, iterations, time, epoch, options) => {
   console.group('----------------Simulation results----------------');
-  console.log('geneticResults');
+  console.group('Simulation:');
+  console.group(`Last population data:`);
+  console.log(`Population got a cost schema of:`);
+  console.log(...simulation.cost);
+  console.log(`Population got a volume schema of:`);
+  console.log(...simulation.volume);
+  console.log(`Simulation calculate a limit volume of:`);
+  console.log(simulation.limitVolume)
+  console.log(`Simulation selected individuals for breeding using:`);
+  console.log(simulation.methods);
+  console.log('Last population got genotypes:');
+  simulation.schema[0].forEach((individual) => console.log(...individual));
+  console.groupEnd('Last population data:');
+  console.groupEnd('Simulation:');
+
+  console.group('Performance');
+  console.group(`Simulation took:`);
+  console.log(`${time} miliseconds`);
+  console.log(`${iterations.length} iterations`);
+  console.groupEnd('Simulation took:');
+  console.groupEnd('Performance');
+
+  console.group('Extras');
+  console.log(
+    `Simulation met epochs limit at ${epoch}/${getProcessData().EPOCHS}`
+  );
+
+  if (options.keep) {
+    console.log(
+      `Find extra log information on ./logs/${options.id}_for_"${
+        getProcessData().HEURISTIC
+      }"_running_epoch_${epoch}_of_${getProcessData().EPOCHS}.json`
+    );
+  }
+  console.groupEnd('Extra');
   console.groupEnd('----------------Simulation result----------------');
 };
 
@@ -111,12 +138,12 @@ const geneticInteration = (iterations) => {
   console.group(
     `----------------Iteration ${generation} status----------------\n`
   );
-  current['schema'][generation].forEach((_, individual) => {
+  current['schema'][0].forEach((_, individual) => {
     console.group(
       `\n----------------Individual ${individual + 1} status----------------\n`
     );
     console.log('Chromosomes: \n');
-    console.log(current['schema'][generation][individual]);
+    console.log(current['schema'][0][individual]);
 
     status.Status = new Status(
       current['factible'][individual],

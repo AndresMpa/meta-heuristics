@@ -97,8 +97,7 @@ const geneticSimulation = (population, generations, epoch, options) => {
     console.log('\n---------------Simulation terminated--------------\n');
     geneticResults(
       population,
-      generations[generations.length - 2],
-      generations.length,
+      generations,
       timeEnd - timeStart,
       epoch,
       options
