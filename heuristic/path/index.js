@@ -44,17 +44,14 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
     }
 
     if (options.keep) {
-      /*
       iterations.push([
         structuredClone(data),
         structuredClone(generateNeighborhood(data, simulation)),
       ]);
-      */
     } else {
       iterations.push(structuredClone(generateNeighborhood(data, simulation)));
     }
   }
-  // GRASP end here
 
   const timeEnd = performance.now();
 
