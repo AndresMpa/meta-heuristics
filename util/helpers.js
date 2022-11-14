@@ -125,12 +125,23 @@ const flatter = (array) => array.flat(array.length);
 const cumulativeList = (data, accumulated = 0) =>
   data.map((current) => (accumulated += current));
 
+/*
+  Using previous calculated probabilities, it choose an item
+*/
+const roulette = (probability) => {
+  const rouletteBall = random(0, 1000) / 1000;
+  const winner = probability.find((possible) => rouletteBall - possible < 0);
+
+  return probability.indexOf(winner);
+};
+
 export {
   round,
   random,
   isZero,
   flatter,
   getMean,
+  roulette,
   dotProduct,
   getIndexes,
   getGreatest,
