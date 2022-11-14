@@ -19,20 +19,8 @@ const schemaGenerator = (schema, data, method, template, flag = true) => {
     schema['schema'][index] = 1;
     schema['cost'][0] += data['cost'][index];
     schema['volume'][0] += data['volume'][index];
-
-    updateSampleData(data, index);
   });
   schema['methods'].push(method);
-};
-
-/*
-  Update data for final simulation file
-*/
-const updateSampleData = (data, index) => {
-  data['cost'][index] = null;
-  data['volume'][index] = null;
-  data['kFactor'][index] = null;
-  data['costVolume'][index] = null;
 };
 
 // It returns schemes under various options
@@ -62,8 +50,6 @@ const getSchema = (
         schema['schema'][index] = 1;
         schema['cost'][0] += data['cost'][index];
         schema['volume'][0] += data['volume'][index];
-
-        updateSampleData(data, index);
       });
       schema['methods'].push('random');
     },
