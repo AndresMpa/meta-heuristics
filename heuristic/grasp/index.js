@@ -1,27 +1,40 @@
+// Schemes handlers (Preprocessinng)
+import { getInitialSchema } from '../../generators/schema/generator.js';
+// Building
+import { buildRLC } from './build/RLC.js';
+// Utilities
+import { graspResults, graspIteration } from '../../util/information.js';
+import { getProcessData } from '../../util/process.js';
+// Data handlers
+import { makeFile } from '../../dataHandlers/fileHandler.js';
+
 /*
   Let simulation run when I meet the constrains
 */
 const running = (simulation) => false;
 
-const graspSimulation = (simulation, iterations) => {
+const graspSimulation = (simulation, iterations, epoch, options) => {
   const timeStart = performance.now();
+  // This is equivalent to preprocessinng stage
   const data = getInitialSchema(simulation, options);
 
   if (getProcessData().LOGGER === '1') {
-    console.log(`Iteration ${simulation['methods'].length - 1}: Schema`);
-    console.log(simulation);
+    graspIteration(simulation);
   }
 
   iterations.push(structuredClone([data, simulation]));
 
+  /*
+    Iteration
+  */
+
+  buildRLC(data, simulation);
+
   while (running(simulation)) {
     if (getProcessData().LOGGER === '1') {
-      console.log(`Iteration ${iterations.length}: `);
-      console.log('State of data:');
-      console.log(data);
+      graspIteration(simulation);
     }
   }
-  // GRASP end here
 
   if (getProcessData().LOGGER === '1') {
     console.log('\n---------------Simulation terminated--------------\n');
@@ -50,6 +63,5 @@ const graspSimulation = (simulation, iterations) => {
     );
   }
 };
-
 
 export default { graspSimulation };
