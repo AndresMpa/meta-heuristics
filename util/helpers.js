@@ -119,6 +119,12 @@ const getMean = (data) =>
 */
 const flatter = (array) => array.flat(array.length);
 
+/*
+  Return a list of accumulated list
+*/
+const cumulativeList = (data, accumulated = 0) =>
+  data.map((current) => (accumulated += current));
+
 export {
   round,
   random,
@@ -130,6 +136,7 @@ export {
   getGreatest,
   updateVolume,
   fillUpToZero,
+  cumulativeList,
   getCurrentPath,
   hammingDistance,
 };
