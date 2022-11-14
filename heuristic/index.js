@@ -11,7 +11,7 @@ const simulate = () => {
       break;
     }
     case 'grasp': {
-      return pathSimulation;
+      return graspSimulation;
       break;
     }
     case 'genetic': {
