@@ -55,8 +55,7 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
   if (getProcessData().LOGGER === '1') {
     graspResults(
       simulation,
-      iterations[iterations.length - 2],
-      iterations.length,
+      iterations,
       timeEnd - timeStart,
       epoch,
       options

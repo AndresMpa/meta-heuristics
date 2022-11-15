@@ -27,7 +27,7 @@ const candidateProbability = (data, simulation, rlc) => {
   const avalibleMethods = ['eq', 'ln', 'po', 'lo', 'ga'];
   const avalibleBias = Object.keys(data);
 
-  let method = avalibleMethods[1]; //random(0, avalibleMethods.length)];
+  let method = avalibleMethods[random(0, avalibleMethods.length)];
   let bias = avalibleBias[random(0, avalibleBias.length)];
   let table = [];
 
