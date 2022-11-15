@@ -25,7 +25,7 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
   let rlc;
 
   if (getProcessData().LOGGER === '1') {
-    graspIteration(simulation);
+    graspIteration(simulation, rlc);
   }
 
   iterations.push(structuredClone([data, simulation, rlc]));
@@ -37,7 +37,7 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
     rlc = buildRLC(data, simulation);
     updatePath(data, simulation, rlc);
     if (!simulation.factible[0]) {
-      pathRelinking(data, simulation, iterations);
+      pathRelinking(simulation, iterations);
       pathRelinkingCounter++;
     }
 
