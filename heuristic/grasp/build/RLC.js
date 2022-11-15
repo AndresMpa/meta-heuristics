@@ -144,8 +144,9 @@ const buildRLC = (data, simulation) => {
     nextBanachBall = roulette(
       cumulativeList(probabilityToBeSelected(rlcProbability))
     );
-    console.log('nextBanachBall: ', nextBanachBall);
   }
+
+  return [rlc, rlcProbability, rlc[nextBanachBall]];
 };
 
 export { buildRLC };
