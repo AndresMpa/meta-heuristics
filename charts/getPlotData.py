@@ -1,8 +1,9 @@
+from dotenv import dotenv_values
 import json
 import os
 
 
-def getData():
+def extractDataFromFile(target=1):
     files = []
     epoch = []
     try:
@@ -14,9 +15,10 @@ def getData():
             file_data = json.load(file_stream)
             for data in file_data:
                 try:
-                    rawfileData.append(data[1])
+                    rawfileData.append(data[target])
                 except:
-                    rawfileData.append(data)
+                    raise Exception(
+                        "There's a problem with your data structure")
             file_stream.close()
 
             files.append(rawfileData)
@@ -26,8 +28,32 @@ def getData():
         return [files, epoch]
 
 
-def clearData():
-    filesData = getData()
+def getExtraGeneticData(container):
+    extraData = extractDataFromFile(2)
+
+    for _, dataSet in enumerate(extraData[0]):
+        for _, rawData in enumerate(dataSet):
+            rawData[0]["schema_population"] = len(rawData)
+            container.append(rawData[0])
+
+    return container
+
+
+def getExtraGraspData(container):
+    extraData = extractDataFromFile(2)
+    for _, reader in enumerate(extraData):
+        print(reader)
+    return container
+
+
+def getPlotData():
+    config = dotenv_values(".env")
+
+    # Getting environmental data
+    method = list(config.items())[2][1]
+
+    filesData = extractDataFromFile()
+    extraPlots = []
     plots = []
 
     for index, files in enumerate(filesData[0]):
@@ -46,6 +72,15 @@ def clearData():
             plotData["factible"].append(data["factible"])
             plotData["volume"].append(data["volume"])
             plotData["cost"].append(data["cost"])
+
         plots.append(plotData)
 
-    return plots
+    if (method == "genetic"):
+        return [plots, getExtraGeneticData(extraPlots)]
+    elif (method == "grasp"):
+        return [plots, getExtraGraspData(extraPlots)]
+    else:
+        return plots
+
+
+getPlotData()
