@@ -2,6 +2,9 @@
 import { getInitialSchema } from '../../generators/schema/generator.js';
 // Building
 import { buildRLC } from './build/RLC.js';
+import { updatePath } from './build/update.js';
+// Search
+import { pathRelinking } from './search/pathRelinking.js'
 // Utilities
 import { graspResults, graspIteration } from '../../util/information.js';
 import { getProcessData } from '../../util/process.js';
@@ -11,28 +14,35 @@ import { makeFile } from '../../dataHandlers/fileHandler.js';
 /*
   Let simulation run when I meet the constrains
 */
-const running = (simulation) => false;
+const running = (pathRelinking) =>
+  pathRelinking < getProcessData().ITERATION_LIMIT;
 
 const graspSimulation = (simulation, iterations, epoch, options) => {
   const timeStart = performance.now();
   // This is equivalent to preprocessinng stage
   const data = getInitialSchema(simulation, options);
+  let pathRelinkingCounter = 0;
+  let rlc;
 
   if (getProcessData().LOGGER === '1') {
     graspIteration(simulation);
   }
 
-  iterations.push(structuredClone([data, simulation]));
+  iterations.push(structuredClone([data, simulation, rlc]));
 
   /*
-    Iteration
+    Iterations execution
   */
+  while (running(pathRelinkingCounter)) {
+    rlc = buildRLC(data, simulation);
+    updatePath(data, simulation, rlc);
+    if (!simulation.factible[0]) {
+      pathRelinking(data, simulation, iterations);
+      pathRelinkingCounter++;
+    }
 
-  buildRLC(data, simulation);
-
-  while (running(simulation)) {
     if (getProcessData().LOGGER === '1') {
-      graspIteration(simulation);
+      graspIteration(simulation, rlc);
     }
   }
 
