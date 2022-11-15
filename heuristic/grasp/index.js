@@ -22,7 +22,7 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
   // This is equivalent to preprocessinng stage
   const data = getInitialSchema(simulation, options);
   let pathRelinkingCounter = 0;
-  let rlc;
+  let rlc = [];
 
   iterations.push(structuredClone([data, simulation, rlc]));
 
