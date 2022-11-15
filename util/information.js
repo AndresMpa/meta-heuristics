@@ -58,7 +58,42 @@ const pathResults = (simulation, result, iterations, time, epoch, options) => {
   console.groupEnd('----------------Simulation result----------------');
 };
 
-const graspResults = () => {};
+const graspResults = (simulation, iterations, time, epoch, options) => {
+  console.group('----------------Simulation results----------------');
+  console.group('Results:');
+  console.group(`Simulation:`);
+  console.log(`Simulation got a max cost of: ${simulation.cost}`);
+  console.log(`Simulation got a min volume of: ${simulation.volume[0]}`);
+  console.log(`Simulation fill up limit volume of: ${simulation.limitVolume}`);
+  console.log(`Simulation used methods:`);
+  console.log(simulation.methods);
+  console.log('Simulation got schema:');
+  console.log(simulation.schema);
+  console.groupEnd('Simulation got:');
+  console.groupEnd('Results:');
+
+  console.group('Performance');
+  console.group(`Simulation took:`);
+  console.log(`${time} miliseconds`);
+  console.log(`${iterations} iterations`);
+  console.groupEnd('Simulation took:');
+  console.groupEnd('Performance');
+
+  console.group('Extras');
+  console.log(
+    `Simulation terminated due to factiblility: ${simulation.factible[0]}`
+  );
+
+  if (options.keep) {
+    console.log(
+      `Find extra log information on ./logs/${options.id}_for_"${
+        getProcessData().HEURISTIC
+      }"_running_epoch_${epoch}_of_${getProcessData().EPOCHS}.json`
+    );
+  }
+  console.groupEnd('Extra');
+  console.groupEnd('----------------Simulation results----------------');
+};
 
 const graspIteration = () => {};
 
