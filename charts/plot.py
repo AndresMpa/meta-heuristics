@@ -104,7 +104,7 @@ def populationSchemes(files, method):
 config = dotenv_values(".env")
 
 # Extracting data from JSON file
-files = data.clearData()
+files = data.getPlotData()
 
 # Getting environmental data
 epochs = list(config.items())[0][1]
