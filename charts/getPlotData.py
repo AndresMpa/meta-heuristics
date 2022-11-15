@@ -39,13 +39,6 @@ def getExtraGeneticData(container):
     return container
 
 
-def getExtraGraspData(container):
-    extraData = extractDataFromFile(2)
-    for _, reader in enumerate(extraData):
-        print(reader)
-    return container
-
-
 def getPlotData():
     config = dotenv_values(".env")
 
@@ -77,8 +70,6 @@ def getPlotData():
 
     if (method == "genetic"):
         return [plots, getExtraGeneticData(extraPlots)]
-    elif (method == "grasp"):
-        return [plots, getExtraGraspData(extraPlots)]
     else:
         return plots
 
