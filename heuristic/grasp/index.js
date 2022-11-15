@@ -4,7 +4,7 @@ import { getInitialSchema } from '../../generators/schema/generator.js';
 import { buildRLC } from './build/RLC.js';
 import { updatePath } from './build/update.js';
 // Search
-import { pathRelinking } from './search/pathRelinking.js'
+import { pathRelinking } from './search/pathRelinking.js';
 // Utilities
 import { graspResults, graspIteration } from '../../util/information.js';
 import { getProcessData } from '../../util/process.js';
@@ -24,11 +24,11 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
   let pathRelinkingCounter = 0;
   let rlc;
 
-  if (getProcessData().LOGGER === '1') {
-    graspIteration(simulation, rlc);
-  }
-
   iterations.push(structuredClone([data, simulation, rlc]));
+
+  if (getProcessData().LOGGER === '1') {
+    graspIteration(iterations, rlc);
+  }
 
   /*
     Iterations execution
@@ -41,8 +41,9 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
       pathRelinkingCounter++;
     }
 
+    iterations.push(structuredClone([data, simulation, rlc]));
     if (getProcessData().LOGGER === '1') {
-      graspIteration(simulation, rlc);
+      graspIteration(iterations, rlc);
     }
   }
 
@@ -54,10 +55,10 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
 
   if (getProcessData().LOGGER === '1') {
     graspResults(
-      simulation,
       iterations,
       timeEnd - timeStart,
       epoch,
+      pathRelinkingCounter,
       options
     );
   }

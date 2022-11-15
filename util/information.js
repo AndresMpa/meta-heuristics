@@ -58,7 +58,8 @@ const pathResults = (simulation, result, iterations, time, epoch, options) => {
   console.groupEnd('----------------Simulation result----------------');
 };
 
-const graspResults = (simulation, iterations, time, epoch, options) => {
+const graspResults = (iterations, time, epoch, pathRelinking, options) => {
+  const simulation = iterations[iterations.length - 2][1];
   console.group('----------------Simulation results----------------');
   console.group('Results:');
   console.group(`Simulation:`);
@@ -75,13 +76,14 @@ const graspResults = (simulation, iterations, time, epoch, options) => {
   console.group('Performance');
   console.group(`Simulation took:`);
   console.log(`${time} miliseconds`);
-  console.log(`${iterations} iterations`);
+  console.log(`${iterations.length} iterations`);
+  console.log(`Using ${pathRelinking} path relinking`);
   console.groupEnd('Simulation took:');
   console.groupEnd('Performance');
 
   console.group('Extras');
   console.log(
-    `Simulation terminated due to factiblility: ${simulation.factible[0]}`
+    `Simulation terminated meeting ${pathRelinking} limit due to factiblility: ${simulation.factible[0]}`
   );
 
   if (options.keep) {
@@ -95,7 +97,26 @@ const graspResults = (simulation, iterations, time, epoch, options) => {
   console.groupEnd('----------------Simulation results----------------');
 };
 
-const graspIteration = () => {};
+const graspIteration = (iterations, rlc) => {
+  // Objects to cast
+  function Status(factible, volume, cost) {
+    this.Factible = factible;
+    this.Volume = volume;
+    this.Cost = cost;
+  }
+
+  const step = iterations.length - 1;
+  const path = iterations[step][1];
+  let status = {};
+
+  console.group(`----------------Step ${step + 1}----------------\n`);
+
+  console.log(path.schema);
+  status.Status = new Status(path.factible[0], path.volume[0], path.cost[0]);
+  console.table(status);
+
+  console.groupEnd(`----------------Step ${step + 1}----------------\n`);
+};
 
 const geneticResults = (simulation, iterations, time, epoch, options) => {
   console.group('----------------Simulation results----------------');
