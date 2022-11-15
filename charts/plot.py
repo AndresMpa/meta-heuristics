@@ -37,7 +37,7 @@ def get_color():
     return random.choice(colors)
 
 
-def path(files, epochs, method):
+def simpleSchema(files, epochs, method):
     # Creating figure
     figure = plt.figure(figsize=(18, 10), dpi=80)
     figure.add_subplot(111)
@@ -65,7 +65,7 @@ def path(files, epochs, method):
     plt.close()
 
 
-def genetic(files, method):
+def populationSchemes(files, method):
     # Creating figure
     figure = plt.figure(figsize=(18, 10), dpi=80)
     figure.add_subplot(111)
@@ -111,10 +111,10 @@ epochs = list(config.items())[0][1]
 method = list(config.items())[2][1]
 
 if method == "genetic":
-    genetic(files, method)
+    populationSchemes(files, method)
 elif method == "grasp":
-    path(files, epochs, method)
+    simpleSchema(files, epochs, method)
 elif method == "path":
-    path(files, epochs, method)
+    simpleSchema(files, epochs, method)
 else:
     raise Exception("Something went wrong, error may be on .env file")
