@@ -1,4 +1,3 @@
-import matplotlib.patches as mpatches
 from dotenv import dotenv_values
 import matplotlib.pyplot as plt
 from datetime import datetime
@@ -51,14 +50,15 @@ def path(files, epochs, method):
 
     for _, file in enumerate(files):
         plt.figtext(0.825, 0.925, "Running {} epochs".format(epochs))
-        plt.figtext(0.805, 0.905, "Volumen limite {}".format(
+        plt.figtext(0.812, 0.905, "Volumen limite {}".format(
             file["limitVolume"]))
 
-        plt.axhline(file["limitVolume"], color='r', linestyle='-')
         plt.scatter(x=file["cost"], y=file["volume"], s=128,
-                    marker=get_maker(), label="Volumen limite {}".format(file["title"]))
+                    marker=get_maker())
 
-    plt.legend(loc="upper left")
+    plt.axhline(files[0]["limitVolume"], color='r', linestyle='-',
+                label="Volumen limite {}".format(files[0]["limitVolume"]))
+    plt.legend(loc="lower right")
 
     # To save figure as a picture
     plt.savefig("./plots/{} {}.png".format(datetime.now(), method))
@@ -112,6 +112,8 @@ method = list(config.items())[2][1]
 
 if method == "genetic":
     genetic(files, method)
+elif method == "grasp":
+    path(files, epochs, method)
 elif method == "path":
     path(files, epochs, method)
 else:
