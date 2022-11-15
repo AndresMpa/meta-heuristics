@@ -1,7 +1,5 @@
-// CLI options
-import { logsForBigScreens } from '../cli/handler.js';
 // Data handlers
-import { getSample } from '../dataHandlers/store.js';
+import { getSample } from '../../dataHandlers/store.js';
 // Utilities
 import {
   random,
@@ -9,7 +7,7 @@ import {
   getGreatest,
   updateVolume,
   fillUpToZero,
-} from '../util/helpers.js';
+} from '../../util/helpers.js';
 
 /*
   Generate schemes using a generic structure
@@ -18,23 +16,11 @@ const schemaGenerator = (schema, data, method, template, flag = true) => {
   let greatest = getGreatest(data[method], template, flag);
   greatest = getIndexes(data[method], greatest);
   greatest.forEach((index) => {
-    schema['schema'][index] = 1;
-    schema['cost'][0] += data['cost'][index];
-    schema['volume'][0] += data['volume'][index];
-
-    updateSampleData(data, index);
+    schema.schema[index] = 1;
+    schema.cost[0] += data.cost[index];
+    schema.volume[0] += data.volume[index];
   });
-  schema['methods'].push(method);
-};
-
-/*
-  Update data for final simulation file
-*/
-const updateSampleData = (data, index) => {
-  data['cost'][index] = null;
-  data['volume'][index] = null;
-  data['kFactor'][index] = null;
-  data['costVolume'][index] = null;
+  schema.methods.push(`Initial-${method}`);
 };
 
 // It returns schemes under various options
@@ -61,13 +47,11 @@ const getSchema = (
     r: () => {
       [...Array(template[1]).keys()].forEach((_) => {
         let index = random(0, data['cost'].length);
-        schema['schema'][index] = 1;
-        schema['cost'][0] += data['cost'][index];
-        schema['volume'][0] += data['volume'][index];
-
-        updateSampleData(data, index);
+        schema.schema[index] = 1;
+        schema.cost[0] += data['cost'][index];
+        schema.volume[0] += data['volume'][index];
       });
-      schema['methods'].push('random');
+      schema['methods'].push('Initial-random');
     },
   };
 
@@ -77,9 +61,9 @@ const getSchema = (
 const getInitialSchema = (simulation, options) => {
   const data = getSample();
 
-  fillUpToZero(data['cost'], simulation['schema']);
+  fillUpToZero(data['cost'], simulation.schema);
   updateVolume(data, simulation);
-  getSchema(data, simulation, options['schema'][0]);
+  getSchema(data, simulation, options.schema[0]);
 
   return data;
 };

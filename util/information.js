@@ -1,4 +1,5 @@
 import { getProcessData } from './process.js';
+import { getMean } from './helpers.js';
 
 /*
   A simple utility to show information under an structure
@@ -57,16 +58,115 @@ const pathResults = (simulation, result, iterations, time, epoch, options) => {
   console.groupEnd('----------------Simulation result----------------');
 };
 
-const geneticResults = (
-  simulation,
-  result,
-  iterations,
-  time,
-  epoch,
-  options
-) => {
+const graspResults = (iterations, time, epoch, pathRelinking, options) => {
+  const simulation = iterations[iterations.length - 2][1];
   console.group('----------------Simulation results----------------');
-  console.log(result);
+  console.group('Results:');
+  console.group(`Simulation:`);
+  console.log(`Simulation got a max cost of: ${simulation.cost}`);
+  console.log(`Simulation got a min volume of: ${simulation.volume[0]}`);
+  console.log(`Simulation fill up limit volume of: ${simulation.limitVolume}`);
+  console.log(`Simulation used methods:`);
+  console.log(simulation.methods);
+  console.log('Simulation got schema:');
+  console.log(simulation.schema);
+  console.groupEnd('Simulation got:');
+  console.groupEnd('Results:');
+
+  console.group('Performance');
+  console.group(`Simulation took:`);
+  console.log(`${time} miliseconds`);
+  console.log(`${iterations.length} iterations`);
+  console.log(`Using ${pathRelinking} path relinking`);
+  console.groupEnd('Simulation took:');
+  console.groupEnd('Performance');
+
+  console.group('Extras');
+  console.log(
+    `Simulation terminated meeting ${pathRelinking} limit due to factiblility: ${simulation.factible[0]}`
+  );
+
+  if (options.keep) {
+    console.log(
+      `Find extra log information on ./logs/${options.id}_for_"${
+        getProcessData().HEURISTIC
+      }"_running_epoch_${epoch}_of_${getProcessData().EPOCHS}.json`
+    );
+  }
+  console.groupEnd('Extra');
+  console.groupEnd('----------------Simulation results----------------');
+};
+
+const graspIteration = (iterations, rlc) => {
+  // Objects to cast
+  function Status(factible, volume, cost) {
+    this.Factible = factible;
+    this.Volume = volume;
+    this.Cost = cost;
+  }
+
+  const step = iterations.length - 1;
+  const path = iterations[step][1];
+  let status = {};
+
+  console.group(`----------------Step ${step + 1}----------------\n`);
+
+  console.log(path.schema);
+  status.Status = new Status(path.factible[0], path.volume[0], path.cost[0]);
+  console.table(status);
+
+  console.groupEnd(`----------------Step ${step + 1}----------------\n`);
+};
+
+const geneticResults = (simulation, iterations, time, epoch, options) => {
+  console.group('----------------Simulation results----------------');
+  console.group('Simulation:');
+  console.group(`Last population data:`);
+  console.log(`Population got a cost schema of:`);
+  console.log(...simulation.cost);
+  console.log(`Population got a volume schema of:`);
+  console.log(...simulation.volume);
+  console.log(`Simulation calculate a limit volume of:`);
+  console.log(simulation.limitVolume);
+  console.log(`Simulation selected individuals for breeding using:`);
+  console.log(simulation.methods);
+  console.log('Last population got genotypes:');
+  simulation.schema[0].forEach((individual) => console.log(...individual));
+  console.groupEnd('Last population data:');
+  console.groupEnd('Simulation:');
+
+  console.group('Performance');
+  console.group(`Simulation took:`);
+  console.log(`${time} miliseconds`);
+  console.log(`${iterations.length} iterations`);
+  console.groupEnd('Simulation took:');
+  console.groupEnd('Performance');
+
+  console.group('Extras');
+  console.log(
+    `Simulation met epochs limit at ${epoch}/${getProcessData().EPOCHS}`
+  );
+  console.log(`Fitness mean through generations:`);
+  console.log(
+    getMean(iterations.map((generation) => generation[2][0]['fitness']))
+  );
+  console.log(`Mutation probability:`);
+  console.log(
+    getProcessData().MUTATION_RATE /
+      (simulation['schema'][0].length * simulation['schema'][0][0].length)
+  );
+
+  console.log(`Mutation rate:`);
+  console.log(getProcessData().MUTATION_RATE * 1);
+
+  if (options.keep) {
+    console.log(
+      `Find extra log information on ./logs/${options.id}_for_"${
+        getProcessData().HEURISTIC
+      }"_running_epoch_${epoch}_of_${getProcessData().EPOCHS}.json`
+    );
+  }
+  console.groupEnd('Extra');
   console.groupEnd('----------------Simulation result----------------');
 };
 
@@ -78,6 +178,12 @@ const geneticInteration = (iterations) => {
     this.Cost = cost;
   }
 
+  function Best(order, length, fitness) {
+    this.Order = order;
+    this.length = length;
+    this.fitness = fitness;
+  }
+
   function Summary(factibles, volumes, costs) {
     function factibleCounter(array) {
       return array.reduce((prev, curr) => (prev += !curr ? 1 : 0), 0);
@@ -87,29 +193,30 @@ const geneticInteration = (iterations) => {
       return array.reduce((prev, curr) => (prev += curr), 0);
     }
 
-    this.totalUnfactible = factibleCounter(factibles);
-    this.totalFactible = Math.abs(
+    this.totalUnfeasible = factibleCounter(factibles);
+    this.totalFeasible = Math.abs(
       factibles.length - factibleCounter(factibles)
     );
 
     this.totalVolume = countTotal(volumes);
     this.totalCost = countTotal(costs);
-    this.populationMean = this.totalCost / costs.length
+    this.populationMean = this.totalCost / costs.length;
   }
 
   const generation = iterations.length - 1;
   const current = iterations[generation][1];
+  const schema = [];
   let status = {};
 
   console.group(
     `----------------Iteration ${generation} status----------------\n`
   );
-  current['schema'][generation].forEach((_, individual) => {
+  current['schema'][0].forEach((_, individual) => {
     console.group(
-      `\n----------------Single ${individual + 1} status----------------\n`
+      `\n----------------Individual ${individual + 1} status----------------\n`
     );
     console.log('Chromosomes: \n');
-    console.log(current['schema'][generation][individual]);
+    console.log(current['schema'][0][individual]);
 
     status.Status = new Status(
       current['factible'][individual],
@@ -119,9 +226,10 @@ const geneticInteration = (iterations) => {
 
     console.table(status);
     console.groupEnd(
-      `\n----------------Single ${individual + 1} status----------------\n`
+      `\n----------------Individual ${individual + 1} status----------------\n`
     );
   });
+
   console.groupEnd(
     `----------------Iteration ${generation} status----------------\n`
   );
@@ -132,15 +240,72 @@ const geneticInteration = (iterations) => {
     current['cost']
   );
 
+  // Summary
   console.group(
-    `\n---------------------------Iteration ${generation} summary---------------------------\n`
+    `\n-----------------------------------Iteration ${generation} summary-----------------------------------\n`
+  );
+  console.table(status);
+  console.groupEnd(
+    `\n-----------------------------------Iteration ${generation} summary-----------------------------------\n`
   );
 
-  console.table(status);
+  // Best individuals
+  console.group(
+    `\n----------------Best individuals from generation ${generation}----------------\n`
+  );
+  iterations[generation][2].forEach((individual) => {
+    console.group(
+      `\n----------------Individual ${
+        individual['individual'] + 1
+      } status----------------\n`
+    );
+    console.log('Chromosomes: \n');
+    console.log(individual['schema']);
+    schema.push([individual['schema'], individual['individual']]);
+
+    status.Status = new Status(
+      individual['factible'],
+      individual['volume'],
+      individual['cost']
+    );
+    console.table(status);
+    status = {};
+
+    status.Best = new Best(
+      individual['order'],
+      individual['length'],
+      individual['fitness']
+    );
+    console.table(status);
+    status = {};
+
+    console.groupEnd(
+      `\n----------------Individual ${
+        individual['individual'] + 1
+      } status----------------\n`
+    );
+  });
+
+  console.group(
+    `\n----------------Best individuals genotype from generation ${generation}----------------\n`
+  );
+  schema.forEach((genotype) => {
+    console.log(`Individual ${genotype[1]} genotype`);
+    console.log(...genotype[0]);
+  });
+  console.groupEnd(
+    `\n----------------Best individuals genotype from generation ${generation}----------------\n`
+  );
 
   console.groupEnd(
-    `\n---------------------------Iteration ${generation} summary---------------------------\n`
+    `\n----------------Best individuals from generation ${generation}----------------\n`
   );
 };
 
-export { pathResults, geneticResults, geneticInteration };
+export {
+  pathResults,
+  graspResults,
+  graspIteration,
+  geneticResults,
+  geneticInteration,
+};

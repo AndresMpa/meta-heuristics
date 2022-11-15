@@ -68,21 +68,22 @@ const updateVolume = (data, simulation) => {
     return current + counter;
   }, 0);
 
-  simulation['limitVolume'] = totalVolume * getProcessData().BACKPACK;
+  simulation['limitVolume'] = round(totalVolume * getProcessData().BACKPACK);
 };
 
 /*
   Hamming distance between 2 arrays, then return
   distance as a number
 */
-const hammingDistance = (data, compare) => {
-  let distance = 0;
+const hammingDistance = (data, compare, getPosition = false) => {
+  let distance = [0, []];
   compare.forEach((value, index) => {
     if (data[index] !== value) {
-      distance += 1;
+      distance[0] += 1;
+      distance[1].push(index);
     }
   });
-  return distance;
+  return getPosition ? distance : distance[0];
 };
 
 /*
@@ -103,19 +104,50 @@ const isZero = (array) => {
 const dotProduct = (schema, data) => {
   const total = schema.reduce((previous, current, index) => {
     return (previous += current * data[index]);
-  });
+  }, 0);
   return total;
+};
+
+/*
+  Return mean of an array of numbers
+*/
+const getMean = (data) =>
+  data.reduce((prev, curr) => (prev += curr), 0) / data.length;
+
+/*
+  Reduce array dimension
+*/
+const flatter = (array) => array.flat(array.length);
+
+/*
+  Return a list of accumulated list
+*/
+const cumulativeList = (data, accumulated = 0) =>
+  data.map((current) => (accumulated += current));
+
+/*
+  Using previous calculated probabilities, it choose an item
+*/
+const roulette = (probability) => {
+  const rouletteBall = random(0, 1000) / 1000;
+  const winner = probability.find((possible) => rouletteBall - possible < 0);
+
+  return probability.indexOf(winner);
 };
 
 export {
   round,
   random,
   isZero,
+  flatter,
+  getMean,
+  roulette,
   dotProduct,
   getIndexes,
   getGreatest,
   updateVolume,
   fillUpToZero,
+  cumulativeList,
   getCurrentPath,
   hammingDistance,
 };

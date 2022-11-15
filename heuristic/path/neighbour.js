@@ -1,5 +1,5 @@
+import { getSchema } from '../../generators/schema/generator.js';
 import { getProcessData } from '../../util/process.js';
-import { getSchema } from '../../schema/generator.js';
 import { random } from '../../util/helpers.js';
 
 /*
