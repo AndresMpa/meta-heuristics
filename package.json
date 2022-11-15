@@ -1,12 +1,12 @@
 {
   "name": "meta-heuristicas",
-  "version": "1.0.3",
+  "version": "1.2.0",
   "description": "Este repositoria contiene heuristicas y metaheuristicas utiles para inteligencia artificial",
   "main": "index.js",
   "type": "module",
   "scripts": {
     "init": "mkdir samples logs plots 2> /dev/null",
-    "clean": "rm ./samples/*; rm ./logs/*; clear;",
+    "clean": "rm ./plots/*; rm ./logs/*; clear;",
     "gen": "node ./dataHandlers/generateSample.js",
     "image": "node ./charts/generatePlot.js",
     "log": "bash ./util/logger.sh",
