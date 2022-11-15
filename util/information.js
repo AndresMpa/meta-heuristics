@@ -118,6 +118,35 @@ const graspIteration = (iterations, rlc) => {
   console.groupEnd(`----------------Step ${step + 1}----------------\n`);
 };
 
+const graspRLC = (rlc, probability) => {
+  // Objects to cast
+  function RLC(probability, feasible, index) {
+    this.ProbabilityToBeUse = probability || "equivalent";
+    this.Feasible = feasible;
+    this.Index = index;
+  }
+
+  let status = {};
+
+  rlc.forEach((candidate, member) => {
+    console.group(
+      `----------------RLC member ${member + 1}----------------\n`
+    );
+
+    console.log(candidate.schema);
+    status.Status = new RLC(
+      probability[member],
+      candidate.feasible,
+      candidate.index
+    );
+    console.table(status);
+
+    console.groupEnd(
+      `----------------RLC member ${member + 1}----------------\n`
+    );
+  });
+};
+
 const geneticResults = (simulation, iterations, time, epoch, options) => {
   console.group('----------------Simulation results----------------');
   console.group('Simulation:');
@@ -303,6 +332,7 @@ const geneticInteration = (iterations) => {
 };
 
 export {
+  graspRLC,
   pathResults,
   graspResults,
   graspIteration,

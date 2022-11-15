@@ -10,6 +10,7 @@ import {
   getIndexes,
   cumulativeList,
 } from '../../../util/helpers.js';
+import { graspRLC } from '../../../util/information.js';
 import { getProcessData } from '../../../util/process.js';
 
 /*
@@ -144,6 +145,10 @@ const buildRLC = (data, simulation) => {
     nextBanachBall = roulette(
       cumulativeList(probabilityToBeSelected(rlcProbability))
     );
+  }
+
+  if (getProcessData().LOGGER === '1') {
+    graspRLC(rlc, cumulativeList(probabilityToBeSelected(rlcProbability)));
   }
 
   return [rlc, rlcProbability, rlc[nextBanachBall]];
