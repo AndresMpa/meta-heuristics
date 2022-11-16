@@ -147,7 +147,7 @@ const buildRLC = (data, simulation) => {
     );
   }
 
-  if (getProcessData().LOGGER === '1') {
+  if (parseInt(getProcessData().LOGGER) >= 2) {
     graspRLC(rlc, cumulativeList(probabilityToBeSelected(rlcProbability)));
   }
 
