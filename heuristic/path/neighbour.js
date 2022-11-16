@@ -116,7 +116,7 @@ const generateNeighborhood = (
     neighborhood.push(generateNeighbour(data, structuredClone(simulation)));
   }
 
-  if (getProcessData().LOGGER === '1') {
+  if (parseInt(getProcessData().LOGGER) === 2) {
     console.group('Neighborhood');
     console.log(neighborhood);
     console.groupEnd('Neighborhood');
@@ -125,7 +125,7 @@ const generateNeighborhood = (
   let choosenNeighbour = chooseNextNeighbour(neighborhood);
   checkNeighbour(choosenNeighbour, simulation, neighborhood);
 
-  if (getProcessData().LOGGER === '1') {
+  if (parseInt(getProcessData().LOGGER) === 2) {
     console.group('Choosen neighborhood');
     console.log(choosenNeighbour);
     console.groupEnd('Choosen neighborhood');

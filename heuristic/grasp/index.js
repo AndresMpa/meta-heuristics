@@ -25,10 +25,8 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
   let rlc = [];
 
   iterations.push(structuredClone([data, simulation, rlc]));
-  if (
-    parseInt(getProcessData().LOGGER) === 1 ||
-    parseInt(getProcessData().LOGGER) >= 3
-  ) {
+
+  if (parseInt(getProcessData().LOGGER) === 2) {
     graspIteration(iterations, rlc);
   }
 
@@ -44,10 +42,7 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
     }
 
     iterations.push(structuredClone([data, simulation, rlc]));
-    if (
-      parseInt(getProcessData().LOGGER) === 1 ||
-      parseInt(getProcessData().LOGGER) >= 3
-    ) {
+    if (parseInt(getProcessData().LOGGER) === 2) {
       graspIteration(iterations, rlc);
     }
   }
@@ -58,7 +53,10 @@ const graspSimulation = (simulation, iterations, epoch, options) => {
 
   const timeEnd = performance.now();
 
-  if (parseInt(getProcessData().LOGGER) >= 1) {
+  if (
+    parseInt(getProcessData().LOGGER) === 1 ||
+    parseInt(getProcessData().LOGGER) >= 3
+  ) {
     graspResults(
       iterations,
       timeEnd - timeStart,
