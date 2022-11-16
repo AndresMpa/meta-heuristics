@@ -20,7 +20,7 @@ const schemaGenerator = (schema, data, method, template, flag = true) => {
     schema.cost[0] += data.cost[index];
     schema.volume[0] += data.volume[index];
   });
-  schema.methods.push(`Initial-${method}`);
+  schema.methods.push(`${method}-method`);
 };
 
 // It returns schemes under various options
@@ -51,7 +51,7 @@ const getSchema = (
         schema.cost[0] += data['cost'][index];
         schema.volume[0] += data['volume'][index];
       });
-      schema['methods'].push('Initial-random');
+      schema['methods'].push('Random-method');
     },
   };
 
