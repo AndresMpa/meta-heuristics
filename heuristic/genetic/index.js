@@ -40,7 +40,7 @@ const geneticSimulation = (population, generations, epoch, options) => {
 
   generations.push([populationData, population, greatestIndividuals, deceased]);
 
-  if (getProcessData().LOGGER === '1') {
+  if (parseInt(getProcessData().LOGGER) === 2) {
     geneticInteration(generations);
   }
 
@@ -92,14 +92,17 @@ const geneticSimulation = (population, generations, epoch, options) => {
       deceased,
     ]);
 
-    if (getProcessData().LOGGER === '1') {
+    if (parseInt(getProcessData().LOGGER) === 2) {
       geneticInteration(generations);
     }
   }
 
   const timeEnd = performance.now();
 
-  if (getProcessData().LOGGER === '1') {
+  if (
+    parseInt(getProcessData().LOGGER) === 1 ||
+    parseInt(getProcessData().LOGGER) >= 3
+  ) {
     console.log('\n---------------Simulation terminated--------------\n');
     geneticResults(
       population,

@@ -178,7 +178,7 @@ if method == "genetic":
     schemesStats(files[1], method, population_size,
                  combination_points, offspring, mutation_rate)
 elif method == "grasp":
-    simpleSchema(files[0], epochs, method)
+    simpleSchema(files, epochs, method)
 elif method == "path":
     simpleSchema(files, epochs, method)
 else:

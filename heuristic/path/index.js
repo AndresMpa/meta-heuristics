@@ -29,7 +29,7 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
   const timeStart = performance.now();
   const data = getInitialSchema(simulation, options);
 
-  if (getProcessData().LOGGER === '1') {
+  if (parseInt(getProcessData().LOGGER) === 2) {
     console.log(`Iteration ${simulation['methods'].length - 1}: Schema`);
     console.log(simulation);
   }
@@ -37,7 +37,7 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
   iterations.push(structuredClone([data, simulation]));
 
   while (running(simulation)) {
-    if (getProcessData().LOGGER === '1') {
+    if (parseInt(getProcessData().LOGGER) === 2) {
       console.log(`Iteration ${iterations.length}: `);
       console.log('State of data:');
       console.log(data);
@@ -55,7 +55,10 @@ const pathSimulation = (simulation, iterations, epoch, options) => {
 
   const timeEnd = performance.now();
 
-  if (getProcessData().LOGGER === '1') {
+  if (
+    parseInt(getProcessData().LOGGER) === 1 ||
+    parseInt(getProcessData().LOGGER) >= 3
+  ) {
     console.log('\n---------------Simulation terminated--------------\n');
     pathResults(
       simulation,
