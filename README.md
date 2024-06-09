@@ -1,4 +1,4 @@
-# Meta-heuristics
+# Meta - heuristics
 
 This repository contains heuristics, also meta-heuristics implemented to solve a generic backpack problem; it owns 3 methods:
 
